@@ -82,14 +82,14 @@
     </div>
 
     <div class="info-link-box">
-        Kravene er listet opp i <b>PA0702 vedlegg 1.1</b>. For tegningsdokumentasjon gjelder <b>PA0603 2D-DAK Tegninger</b>. 
+        Kravene er listet opp i <b>PA0702 vedlegg 1.1</b>. For tegningsdokumentasjon gjelder <b>PA0603 2D-DAK Tegninger</b>.Systemnummer og løpenummer <b> hentes fra bygget i MMFM</b>. 
         Dette systemet er utviklet basert på disse spesifikasjonene. Du vil finne alle prosjekteringsanvisninger (PA) her: 
         <a href="https://www.statsbygg.no/publikasjoner" target="_blank">statsbygg.no/publikasjoner</a>.
     </div>
 
     <div class="tab-wrapper">
-        <button id="tab-std-btn" class="tab-btn active" onclick="showTab('std')">📂 Standard Dokument</button>
-        <button id="tab-teg-btn" class="tab-btn" onclick="showTab('teg')">📐 Tegning (Full Struktur)</button>
+        <button id="tab-std-btn" class="tab-btn active" onclick="showTab('std')">📂 Filnavnegenerator (PA0702)</button>
+        <button id="tab-teg-btn" class="tab-btn" onclick="showTab('teg')">📐 Navnegenerator for Tegning (PA0603)</button>
     </div>
 
     <div id="std-content" class="tab-content active">
@@ -511,7 +511,7 @@
 
     <div id="result-container"><div id="result-text">Klar til å generere...</div></div>
 
-    <div id="drop-zone">☁️ Dra og slipp filen her (Optional)</div>
+    <div id="drop-zone">☁️ Dra og slipp filen her (Opsjon)</div>
 
     <div class="button-grid">
         <button class="action btn-gen" onclick="generate()">⚙️ Generer Navn</button>
@@ -523,7 +523,7 @@
     <div class="veiledning">
         <h3>📘 Veiledning for bruk</h3>
         <ol>
-            <li><b>Velg Modus:</b> Velg enten "Standard Dokument" for FDV eller "Tegning" for tekniske tegninger.</li>
+            <li><b>Velg Modus:</b> Velg enten "Filnavnegenerator (PA0702)" for FDV dokumentasjon eller "Navnegenerator for Tegning (PA0603)" for  tegninger.</li>
             <li><b>Fyll ut data:</b> Skriv inn systemnummer, komponentkoder og informasjonstype basert på Statsbyggs PA-anvisninger.</li>
             <li><b>Generer Navn:</b> Klikk på "Generer Navn" for å se resultatet i den oransje boksen.</li>
             <li><b>Dra og slipp (Anbefalt):</b> Hvis du har filen klar, dra den direkte til det blå området. Filen vil automatisk lastes ned med det korrekte navnet.</li>
