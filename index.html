@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statsbygg Generator | Sarah Daragmeh</title>
+    <style>
+        :root {
+            --statsbygg-blue: #1d2c4d;
+            --statsbygg-orange: #ef6c00;
+            --light-bg: #f4f7f9;
+            --border-color: #d1d9e0;
+        }
+
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--light-bg); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 1000px; margin: 20px auto; background: white; padding: 35px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 25px; }
+       /* تنسيق الشعار الجديد */
+        .logo-svg { height: 35px; width: auto;display: block; }
+        .developer-credit { text-align: right; font-size: 14px; }
+        .developer-credit b { color: var(--statsbygg-blue); }
+
+        .tab-wrapper { display: flex; background: #e2e8f0; padding: 5px; border-radius: 8px; margin-bottom: 20px; }
+        .tab-btn { flex: 1; padding: 14px; border: none; background: none; cursor: pointer; font-weight: bold; color: var(--statsbygg-blue); border-radius: 6px; transition: 0.3s; }
+        .tab-btn.active { background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+
+        .tab-content { display: none; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
+        .tab-content.active { display: block; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .full-width { grid-column: span 2; }
+
+        .comp-box { background: #eef2f7; padding: 15px; border-radius: 8px; grid-column: span 2; border: 1px solid #cfd8dc; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        label { font-weight: 600; display: block; margin-bottom: 5px; color: var(--statsbygg-blue); font-size: 13px; }
+        input, select { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 14px; box-sizing: border-box; }
+
+        #result-container { margin-top: 20px; padding: 20px; background: #fff3e0; border: 2px dashed var(--statsbygg-orange); border-radius: 8px; text-align: center; }
+        #result-text { font-family: 'Consolas', monospace; font-size: 19px; font-weight: bold; color: var(--statsbygg-blue); word-break: break-all; }
+
+        #drop-zone { margin-top: 20px; padding: 30px; border: 2px dashed var(--statsbygg-blue); border-radius: 12px; text-align: center; color: var(--statsbygg-blue); background: #f0f4f8; cursor: pointer; transition: 0.3s; font-weight: bold; }
+        #drop-zone.dragover { background: #dbeafe; border-color: var(--statsbygg-orange); }
+
+        .button-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 20px; }
+        button.action { padding: 12px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .btn-gen { background: var(--statsbygg-blue); color: white; }
+        .btn-copy { background: #607d8b; color: white; }
+        .btn-next { background: var(--statsbygg-orange); color: white; }
+
+        .recent-list { margin-top: 15px; background: #f9f9f9; padding: 10px; border-radius: 6px; border-left: 4px solid var(--statsbygg-blue); }
+        .recent-title { font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #666; }
+        .recent-item { font-size: 11px; padding: 4px 0; border-bottom: 1px solid #eee; font-family: monospace; }
+
+        .info-link-box { margin-top: 25px; padding: 15px; background: #e8f4fd; border-radius: 8px; border-left: 5px solid #2196f3; font-size: 14px; line-height: 1.6; }
+        .info-link-box a { color: var(--statsbygg-orange); text-decoration: none; font-weight: bold; }
+        .info-link-box a:hover { text-decoration: underline; }
+
+        .veiledning { margin-top: 30px; padding: 20px; background: #fff; border: 1px solid #ddd; border-radius: 8px; }
+        .veiledning h3 { margin-top: 0; color: var(--statsbygg-blue); border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .veiledning ol { padding-left: 20px; }
+        .veiledning li { margin-bottom: 10px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    
+<div class="container">
+    <div class="header">
+<div class="logo">
+            <svg class="logo-svg" viewBox="0 0 350 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M45,25 L50,15 L55,25 L65,25 L60,35 L40,35 L35,25 Z" fill="#000"/>
+                <circle cx="50" cy="12" r="3" fill="#000"/>
+                <rect x="30" y="42" width="40" height="5" fill="#000"/>
+                <rect x="30" y="50" width="40" height="3" fill="#000"/>
+                <rect x="30" y="56" width="40" height="2" fill="#000"/>
+                <rect x="30" y="61" width="40" height="1" fill="#000"/>
+                <text x="85" y="58" font-family="Arial, sans-serif" font-weight="900" font-size="38" fill="#000">STATSBYGG</text>
+            </svg>
+        </div>
+
+        <div class="developer-credit">Utviklet av: <b>Sarah Daragmeh</b></div>
+    </div>
+
+    <div class="info-link-box">
+        Kravene er listet opp i <b>PA0702 vedlegg 1.1</b>. For tegningsdokumentasjon gjelder <b>PA0603 2D-DAK Tegninger</b>. 
+        Dette systemet er utviklet basert på disse spesifikasjonene. Du vil finne alle prosjekteringsanvisninger (PA) her: 
+        <a href="https://www.statsbygg.no/publikasjoner" target="_blank">statsbygg.no/publikasjoner</a>.
+    </div>
+
+    <div class="tab-wrapper">
+        <button id="tab-std-btn" class="tab-btn active" onclick="showTab('std')">📂 Standard Dokument</button>
+        <button id="tab-teg-btn" class="tab-btn" onclick="showTab('teg')">📐 Tegning (Full Struktur)</button>
+    </div>
+
+    <div id="std-content" class="tab-content active">
+        <div class="form-grid">
+            <div class="form-group"><label>1. Systemnummer</label><input id="std-sys" type="text" placeholder="PA0702"></div>
+            <div class="form-group"><label>2. System Løpenummer</label><input id="std-sys-run" type="number" value="01"></div>
+            <div class="comp-box">
+                <div class="form-group">
+                    <label>3. Komponentkode</label>
+                    <select id="std-komp">
+                        <option value="">-- Ingen komponent --</option>
+                        <option value="A">A - Bærende / Romdannende</option>
+                        <option value="AB">AB - Bjelke</option>
+                        <option value="AD">AD - Dekker</option>
+                        <option value="AE">AE - Elementer</option>
+                        <option value="AF">AF - Fagverk</option>
+                        <option value="AG">AG - Glassfelt</option>
+                        <option value="AH">AH - Fundamenter</option>
+                        <option value="AK">AK - Komplette konstruksjoner</option>
+                        <option value="AL">AL - List / Beslistning</option>
+                        <option value="AO">AO - Oppbygende / Utforende</option>
+                        <option value="AP">AP - Plate</option>
+                        <option value="AR">AR - Ramme / Oppheng</option>
+                        <option value="AS">AS - Søyle</option>
+                        <option value="AU">AU - Åpninger</option>
+                        <option value="AV">AV - Vegg</option>
+                        <option value="B">B - Innebyggende</option>
+                        <option value="BA">BA - Armering, Forsterkning</option>
+                        <option value="BB">BB - Beskyttende / Stoppende</option>
+                        <option value="BC">BC - Begrensende</option>
+                        <option value="BF">BF - Fuging</option>
+                        <option value="BG">BG - Pakning, Tetning</option>
+                        <option value="BI">BI - Isolasjon</option>
+                        <option value="BP">BP - Avretningsmasse</option>
+                        <option value="BS">BS - Spikerslag</option>
+                        <option value="C">C - Kompletterende / Utspringende</option>
+                        <option value="CB">CB - Balkong</option>
+                        <option value="CC">CC - Baldakin</option>
+                        <option value="CD">CD - Karnapp</option>
+                        <option value="CG">CG - Rampe / Repos</option>
+                        <option value="CK">CK - Komplett konstruksjon</option>
+                        <option value="CM">CM - Kjemiske stoffer</option>
+                        <option value="CO">CO - Kobling, Overgang</option>
+                        <option value="CP">CP - Pipe / Skostein</option>
+                        <option value="CQ">CQ - Festemateriell</option>
+                        <option value="CR">CR - Rammeverk / Oppheng</option>
+                        <option value="CT">CT - Trapp / Leider</option>
+                        <option value="CX">CX - Tunnel / Bru (inne/ute)</option>
+                        <option value="D">D - Åpnende</option>
+                        <option value="DB">DB - Dør med brannklasse</option>
+                        <option value="DF">DF - Foldedør / Foldevegg</option>
+                        <option value="DI">DI - Dør - innvendig</option>
+                        <option value="DK">DK - Kjøretøyregulering</option>
+                        <option value="DL">DL - Luke</option>
+                        <option value="DP">DP - Port</option>
+                        <option value="DT">DT - Dør - tilfluktsrom</option>
+                        <option value="DU">DU - Dør - utvendig</option>
+                        <option value="DV">DV - Vindu</option>
+                        <option value="E">E - Bekledende</option>
+                        <option value="EB">EB - Overflatebekledning</option>
+                        <option value="EC">EC - Overflatebehandling</option>
+                        <option value="EH">EH - Himling</option>
+                        <option value="F">F - Innredende  Veggfast</option>
+                        <option value="FA">FA - Ventilert arbeidsplass</option>
+                        <option value="FB">FB - Benk / Bord / Plate / Tavle</option>
+                        <option value="FC">FC - Beslag</option>
+                        <option value="FD">FD - Disk / Skranke</option>
+                        <option value="FF">FF - Fryserom</option>
+                        <option value="FH">FH - Hylle / Reol</option>
+                        <option value="FI">FI - Kabinett</option>
+                        <option value="FK">FK - Kjølerom / Svalrom</option>
+                        <option value="FO">FO - Sittebenk / Sofa / Stol</option>
+                        <option value="FR">FR - Rom</option>
+                        <option value="FS">FS - Skap / Skuff</option>
+                        <option value="FT">FT - Speil</option>
+                        <option value="FU">FU - Utstyr, utsmykning</option>
+                        <option value="FV">FV - Vaskemaskin</option>
+                        <option value="FX">FX - Krok / Knagg / Håndtak</option>
+                        <option value="G">G - Møblerende / Utstyr / Inventar</option>
+                        <option value="GA">GA - Automat / Maskin</option>
+                        <option value="GB">GB - Benk / Bord / Plate / Tavle</option>
+                        <option value="GD">GD - Dekontamator</option>
+                        <option value="GE">GE - Autoklaver</option>
+                        <option value="GF">GF - Fryseskap</option>
+                        <option value="GG">GG - Gardiner / Forheng</option>
+                        <option value="GH">GH - Hylle / Reol</option>
+                        <option value="GK">GK - Kjøleskap / Kjøledisk</option>
+                        <option value="GL">GL - Lås / Beslag</option>
+                        <option value="GM">GM - Mattilbereding</option>
+                        <option value="GN">GN - Nøkler</option>
+                        <option value="GO">GO - Sofa / Sittebenk</option>
+                        <option value="GP">GP - Stol</option>
+                        <option value="GQ">GQ - Seng / Liggebenk</option>
+                        <option value="GS">GS - Skap / Skuffer</option>
+                        <option value="GT">GT - Tørkeskap / Varmeskap</option>
+                        <option value="GU">GU - Løst utstyr, utsmykning</option>
+                        <option value="GV">GV - Vaskemaskin</option>
+                        <option value="GW">GW - Vekt</option>
+                        <option value="GX">GX - Holder</option>
+                        <option value="GY">GY - Avfallsbeholder</option>
+                        <option value="H">H - Hjelpende (Mobilt)</option>
+                        <option value="HA">HA - Automobil / Bil</option>
+                        <option value="HB">HB - Rullebord / Tralle</option>
+                        <option value="HC">HC - Container / Vogn</option>
+                        <option value="HM">HM - Maskin</option>
+                        <option value="HS">HS - Rullestol</option>
+                        <option value="HT">HT - Truck / kran</option>
+                        <option value="HV">HV - Verktøy</option>
+                        <option value="I">I - Produserende</option>
+                        <option value="IB">IB - Brenner</option>
+                        <option value="IC">IC - Solceller/solfangere</option>
+                        <option value="ID">ID - Kjel  for destruksjon</option>
+                        <option value="IE">IE - Elektrokjel</option>
+                        <option value="IF">IF - Kjel for fast/bio brensel</option>
+                        <option value="IG">IG - Generator</option>
+                        <option value="IK">IK - Kuldeaggregat</option>
+                        <option value="IL">IL - Energibrønn</option>
+                        <option value="IM">IM - Motor</option>
+                        <option value="IO">IO - Oljekjel</option>
+                        <option value="IP">IP - Gasskjel</option>
+                        <option value="IS">IS - Spesielt</option>
+                        <option value="IT">IT - Trykkluftaggregat (enhet)</option>
+                        <option value="IU">IU - Turbin</option>
+                        <option value="IV">IV - Aggregatenhet</option>
+                        <option value="J">J - Forsterkende</option>
+                        <option value="JF">JF - Forsterker</option>
+                        <option value="JK">JK - Kompressor</option>
+                        <option value="JP">JP - Pumpe</option>
+                        <option value="JQ">JQ - Pumpe i VA-installasjoner</option>
+                        <option value="JV">JV - Vifte</option>
+                        <option value="JW">JW - Spesialvifte</option>
+                        <option value="K">K - Overførende / Transporterende</option>
+                        <option value="KA">KA - Aktuator</option>
+                        <option value="KD">KD - Drivhjul / Drev</option>
+                        <option value="KE">KE - Induktiv energioverføring</option>
+                        <option value="KG">KG - Gjennomføring</option>
+                        <option value="KH">KH - Transportenhet ( hevende, forflyttende)</option>
+                        <option value="KJ">KJ - Jordingskomponenter</option>
+                        <option value="KK">KK - Kanal</option>
+                        <option value="KM">KM - Mast / Antenne</option>
+                        <option value="KN">KN - Nedløp</option>
+                        <option value="KO">KO - Kraftoverføring</option>
+                        <option value="KQ">KQ - Rør - spesielt</option>
+                        <option value="KR">KR - Rør - generelt</option>
+                        <option value="KS">KS - Skinne / Bane / Spor</option>
+                        <option value="KT">KT - Deler</option>
+                        <option value="KU">KU - Kombinert kabel</option>
+                        <option value="KV">KV - Høyspenningskabel > 1000V</option>
+                        <option value="KW">KW - Lavspenningskabel 50 til 1000V</option>
+                        <option value="KX">KX - Lavspenningskabel < 50V</option>
+                        <option value="KY">KY - Optisk kabel</option>
+                        <option value="KZ">KZ - Slange</option>
+                        <option value="L">L - Omformende / Vekslende</option>
+                        <option value="LB">LB - Varmeomformende med vifte</option>
+                        <option value="LC">LC - Kjøleomformende med vifte</option>
+                        <option value="LD">LD - Kjøleflater</option>
+                        <option value="LE">LE - Kondensator</option>
+                        <option value="LF">LF - Fordamper</option>
+                        <option value="LG">LG - Gear, clutch</option>
+                        <option value="LH">LH - Varmeflate</option>
+                        <option value="LI">LI - Varmeelement</option>
+                        <option value="LK">LK - Kjøleomformende</option>
+                        <option value="LL">LL - Lyskilde</option>
+                        <option value="LN">LN - Likeretter</option>
+                        <option value="LO">LO - Omformer</option>
+                        <option value="LP">LP - Pens / Veksel / Sjalter</option>
+                        <option value="LQ">LQ - Vekselretter</option>
+                        <option value="LR">LR - Frekvensomformer</option>
+                        <option value="LS">LS - Strålevarme</option>
+                        <option value="LU">LU - Luftfukter</option>
+                        <option value="LV">LV - Varmeomformende</option>
+                        <option value="LX">LX - Varmegjenvinner</option>
+                        <option value="LZ">LZ - Varmekabel / Varmerør</option>
+                        <option value="M">M - Filtrerende / Rensende</option>
+                        <option value="MA">MA - Absoluttfilter</option>
+                        <option value="MB">MB - ABC-filter</option>
+                        <option value="MC">MC - UV-filter</option>
+                        <option value="ME">ME - Elektrostatiske filter</option>
+                        <option value="MF">MF - Luftfilter</option>
+                        <option value="MG">MG - Fettfilter</option>
+                        <option value="MK">MK - Kondenspotte</option>
+                        <option value="ML">ML - Luftutskiller</option>
+                        <option value="MM">MM - Membran</option>
+                        <option value="MO">MO - Utskiller</option>
+                        <option value="MR">MR - Rist / Sil</option>
+                        <option value="MS">MS - Syklon</option>
+                        <option value="MT">MT - Tørke</option>
+                        <option value="MU">MU - Filter for Lyd / Bilde / Frekvensutjevner</option>
+                        <option value="MV">MV - Vannfilter</option>
+                        <option value="MW">MW - Vannbehandling</option>
+                        <option value="MX">MX - Støyfilter</option>
+                        <option value="N">N - Lagrende</option>
+                        <option value="NB">NB - Batteri / UPS</option>
+                        <option value="NC">NC - Kondensator</option>
+                        <option value="NI">NI - Informasjonslagring</option>
+                        <option value="NK">NK - Kum</option>
+                        <option value="NM">NM - Badekar / Basseng</option>
+                        <option value="NO">NO - Åpen tank</option>
+                        <option value="NT">NT - Tank med trykk</option>
+                        <option value="NU">NU - Tank uten trykk</option>
+                        <option value="NV">NV - Vekt, Lodd</option>
+                        <option value="NW">NW - Varmtvannsbereder</option>
+                        <option value="NX">NX - Toalett</option>
+                        <option value="NY">NY - Servant</option>
+                        <option value="NZ">NZ - Brannslukkingsapparat</option>
+                        <option value="O">O - Prosesserende</option>
+                        <option value="OA">OA - AV-maskiner</option>
+                        <option value="OB">OB - Shuntgruppe</option>
+                        <option value="OD">OD - Datamaskin</option>
+                        <option value="OE">OE - Energimåler</option>
+                        <option value="OF">OF - Systembærer</option>
+                        <option value="OM">OM - Mottaker / Sender</option>
+                        <option value="OP">OP - PBX</option>
+                        <option value="OQ">OQ - Dataprogram,programvare</option>
+                        <option value="OR">OR - Router, Fordeler</option>
+                        <option value="OS">OS - Sentralenhet, Mikسر i Lydsystem</option>
+                        <option value="OT">OT - Telefonapparat</option>
+                        <option value="OU">OU - Undersentral</option>
+                        <option value="Q">Q - Vernende / Dempende</option>
+                        <option value="QB">QB - Belastningsvakt</option>
+                        <option value="QD">QD - Differansetrykkvakt</option>
+                        <option value="QE">QE - Elektrisk vern</option>
+                        <option value="QF">QF - Strømningsvakt</option>
+                        <option value="QH">QH - Fuktvakt</option>
+                        <option value="QL">QL - Lyddemper</option>
+                        <option value="QM">QM - Mekanisk beskyttelse</option>
+                        <option value="QN">QN - Nivåvakt</option>
+                        <option value="QO">QO - Overtrykksventil</option>
+                        <option value="QP">QP - Trykkvakt</option>
+                        <option value="QQ">QQ - Vibrasjonsvakt</option>
+                        <option value="QR">QR - Rotasjonsvakt</option>
+                        <option value="QS">QS - Strømvakt</option>
+                        <option value="QT">QT - Temperaturvakt</option>
+                        <option value="QV">QV - Sikkerhetsventil</option>
+                        <option value="QX">QX - Solavskjerming</option>
+                        <option value="QY">QY - Lynavleder</option>
+                        <option value="QZ">QZ - Brannvern</option>
+                        <option value="R">R - Registrerende</option>
+                        <option value="RA">RA - AV-opptaker</option>
+                        <option value="RB">RB - Bevegelse</option>
+                        <option value="RC">RC - Seismometer</option>
+                        <option value="RD">RD - Differansetrykkgiver</option>
+                        <option value="RE">RE - Elektriske variabler</option>
+                        <option value="RF">RF - Strømningsmåler</option>
+                        <option value="RG">RG - Posisjon / Lengde</option>
+                        <option value="RH">RH - Fuktighetsgiver</option>
+                        <option value="RI">RI - Termometer</option>
+                        <option value="RJ">RJ - Fotocelle</option>
+                        <option value="RK">RK - Kortleser</option>
+                        <option value="RM">RM - Multifunksjonell, Kombinert føler</option>
+                        <option value="RN">RN - Nivågiver</option>
+                        <option value="RP">RP - Trykkgiver</option>
+                        <option value="RQ">RQ - Manometer, Trykkmåler</option>
+                        <option value="RR">RR - Giver generelt</option>
+                        <option value="RS">RS - Hastighetsmåler</option>
+                        <option value="RT">RT - Temperaturgiver</option>
+                        <option value="RU">RU - Ur</option>
+                        <option value="RV">RV - Veieceller</option>
+                        <option value="RW">RW - Virkningsgradsmåler</option>
+                        <option value="RX">RX - Målepunkt</option>
+                        <option value="RY">RY - Gassdetektor/Røykdetektor</option>
+                        <option value="RZ">RZ - Branndeteksjon</option>
+                        <option value="S">S - Stengende / Regulerende</option>
+                        <option value="SA">SA - Reguleringsventil, manuell</option>
+                        <option value="SB">SB - Reguleringsventil, motorstyrt</option>
+                        <option value="SC">SC - Stengeventil, motorstyrt</option>
+                        <option value="SD">SD - Alarmventil sprinkler</option>
+                        <option value="SE">SE - Ekspansjonsventil</option>
+                        <option value="SF">SF - Fraluftsventil</option>
+                        <option value="SG">SG - Tilbakeslagsventil / Overtrykkspjeld</option>
+                        <option value="SH">SH - Hurtigkobling</option>
+                        <option value="SI">SI - Effektregulator</option>
+                        <option value="SJ">SJ - Jevntrykksventil</option>
+                        <option value="SK">SK - Strømningsregulator - CAV</option>
+                        <option value="SM">SM - Stengeventil, manuell</option>
+                        <option value="SP">SP - Trykkutjevningsventil</option>
+                        <option value="SQ">SQ - Strømningsregulator - VAV</option>
+                        <option value="SR">SR - Reguleringsspjeld</option>
+                        <option value="SS">SS - Stengespjeld</option>
+                        <option value="ST">ST - Tilluftsventil</option>
+                        <option value="SU">SU - Sugetrykksventil</option>
+                        <option value="SV">SV - Strupeventil</option>
+                        <option value="SW">SW - Plenumskammer</option>
+                        <option value="SX">SX - Regulator</option>
+                        <option value="SZ">SZ - Brannspjeld / Røykspjeld</option>
+                        <option value="U">U - Uttakende</option>
+                        <option value="UA">UA - Uttak alarm</option>
+                        <option value="UB">UB - Blandebatteri</option>
+                        <option value="UD">UD - Uttak data</option>
+                        <option value="UE">UE - Uttak el</option>
+                        <option value="UF">UF - Fellesuttak</option>
+                        <option value="UG">UG - Uttak gass</option>
+                        <option value="UH">UH - Høyttaler</option>
+                        <option value="UJ">UJ - Skriver</option>
+                        <option value="UK">UK - Kontrollpanel / Tablå</option>
+                        <option value="UL">UL - Uttak trykkluft</option>
+                        <option value="UM">UM - Monitor / Display</option>
+                        <option value="UN">UN - Nødbelysning</option>
+                        <option value="UO">UO - Trommel</option>
+                        <option value="UP">UP - Belysningsarmatur</option>
+                        <option value="UR">UR - Uttak radio</option>
+                        <option value="US">US - Stasjon</option>
+                        <option value="UT">UT - Uttak telefon</option>
+                        <option value="UV">UV - Uttak vann</option>
+                        <option value="UX">UX - Koblingsboks</option>
+                        <option value="UY">UY - Uttak antenne</option>
+                        <option value="UZ">UZ - Dyse / Spreder</option>
+                        <option value="V">V - Utvendig</option>
+                        <option value="VB">VB - Bærelag</option>
+                        <option value="VD">VD - Dekke</option>
+                        <option value="VG">VG - Gress</option>
+                        <option value="VK">VK - Kantstein, heller</option>
+                        <option value="VL">VL - Masse</option>
+                        <option value="VM">VM - Mekanisk beskyttelse</option>
+                        <option value="VP">VP - Planter,busker,trær</option>
+                        <option value="VS">VS - Skilt</option>
+                        <option value="X">X - El. Produkter</option>
+                        <option value="XC">XC - Kondensator</option>
+                        <option value="XD">XD - Komp. for binærlogikk</option>
+                        <option value="XF">XF - Komponenter for vern</option>
+                        <option value="XG">XG - Komponenter for krafttilførsel</option>
+                        <option value="XH">XH - Komponenter for signalering</option>
+                        <option value="XI">XI - Potensiometer</option>
+                        <option value="XK">XK - Releer / Kontaktorer</option>
+                        <option value="XL">XL - Induktiv komponenter</option>
+                        <option value="XM">XM - Motor</option>
+                        <option value="XN">XN - Integrerte kretser</option>
+                        <option value="XO">XO - Urbryter / Timer</option>
+                        <option value="XP">XP - Komponenter for måling og prøving</option>
+                        <option value="XQ">XQ - Effektbryter</option>
+                        <option value="XR">XR - Motstand</option>
+                        <option value="XS">XS - Bryter / Vender / Knapp / Vippe</option>
+                        <option value="XT">XT - Transformator</option>
+                        <option value="XV">XV - Halvlederkomponenter og elektronرør</option>
+                        <option value="XX">XX - Rekkeklemmer / Samlesignal</option>
+                        <option value="XZ">XZ - Terminering og tilpasning</option>
+                        <option value="Y">Y - Spesielt</option>
+                        <option value="YA">YA - Virtuelle systemkomponenter i distribuerende system</option>
+                        <option value="YB">YB - Virtuelle grupperende systembærere</option>
+                        <option value="YC">YC - Koblingspunkt</option>
+                        <option value="Z">Z - Spesielle prosessutstyr for virksomheten.</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>4. Komp. Løpenummer</label><input id="std-komp-run" type="number" placeholder="01"></div>
+            </div>
+            <div class="form-group full-width">
+                <label>5. Informasjonstype</label>
+                <select id="std-info" onchange="populateStdDocs()">
+                    <option value="">Velg...</option>
+                    <option value="Attestasjon">Attestasjon</option>
+                    <option value="Beskrivelse">Beskrivelse</option>
+                    <option value="Bilde">Bilde</option>
+                    <option value="Bruksanvisning">Bruksanvisning</option>
+                    <option value="Drift">Drift</option>
+                    <option value="Grunninformasjon">Grunninformasjon</option>
+                    <option value="Identifikasjon">Identifikasjon</option>
+                    <option value="Kravoppnåelse">Kravoppnåelse</option>
+                    <option value="Produktinformasjon">Produktinformasjon</option>
+                    <option value="Protokoll">Protokoll</option>
+                    <option value="Tegning">Tegning</option>
+                    <option value="Vedlikehold">Vedlikehold</option>
+                </select>
+            </div>
+            <div class="form-group full-width"><label>6. Dokumenttype</label><select id="std-doc"><option value="">Velg type først...</option></select></div>
+            <div class="form-group full-width"><label>7. Fritekst (Valgfritt)</label><input id="std-text" type="text"></div>
+        </div>
+        <div class="recent-list"><div class="recent-title">Siste filnavn (Standard):</div><div id="std-history">Ingen historikk.</div></div>
+    </div>
+
+    <div id="teg-content" class="tab-content">
+        <div class="form-grid">
+            <div class="form-group"><label>1. Eiendomsnummer</label><input id="teg-eiendom" type="text" placeholder="1000601"></div>
+            <div class="form-group"><label>2. Byggnummer</label><input id="teg-bygg" type="text" value="00"></div>
+            <div class="form-group"><label>3. Etasje</label><input id="teg-etasje" type="text" placeholder="01"></div>
+            <div class="form-group">
+                <label>4. Fag</label>
+                <select id="teg-fag">
+                   <option value="A">A - Arkitekt</option>
+    <option value="B">B - Byggeteknikk</option>
+    <option value="C">C - Akustikk</option>
+    <option value="D">D - Andre fag</option>
+    <option value="E">E - Elektro</option>
+    <option value="F">F - Brann</option>
+    <option value="G">G - Geoteknikk og grunnarbeider</option>
+    <option value="H">H - Heis</option>
+    <option value="I">I - Interiørarkitekt</option>
+    <option value="L">L - Landskap, terreng</option>
+    <option value="M">M - Maskin</option>
+    <option value="O">O - Oppmåling</option>
+    <option value="P">P - Prosess</option>
+    <option value="S">S - Sikkerhet - Security</option>
+    <option value="T">T - Ekom og automatisering</option>
+    <option value="U">U - Utsmykning</option>
+    <option value="V">V - Varme, ventilasjon og sanitær</option>
+    <option value="W">W - Vei, trafikk</option>
+    <option value="X">X - Utarbeidet av Statsbygg</option>
+    <option value="Y">Y - Utarbeidet av entreprenør/leverandør</option>
+    <option value="Z">Z - Teknisk infrastruktur (VA, drenering, teknisk anlegg osv.)</option>
+</select>
+            </div>
+            <div class="form-group"><label>5. Systemkode</label><input id="teg-system" type="text" placeholder="360"></div>
+            <div class="form-group"><label>6. TegningsType</label><select id="teg-type"><option value="10">10 - Utendørs</option>
+    <option value="20">20 - Plantegning</option>
+    <option value="30">30 - Komplettering</option>
+    <option value="40">40 - Snitt, oppriss, fasader</option>
+    <option value="50">50 - Detaljer</option>
+    <option value="60">60 - Skjemaer</option>
+    <option value="70">70 - Prinsipp</option>
+    <option value="80">80 - Perspektiv, modell</option>
+    <option value="90">90 - Utsmykning</option>
+</select>
+</div>
+            <div class="form-group"><label>7. Løpenummer</label><input id="teg-run" type="number" value="500"></div>
+            <div class="form-group"><label>Format</label><select id="teg-ext" onchange="updateTegStart()"><option value=".pdf">.pdf (500+)</option><option value=".dwg">.dwg (001+)</option></select></div>
+            <div class="form-group full-width"><label>8. Fritekst (Valgfritt)</label><input id="teg-text" type="text"></div>
+        </div>
+        <div class="recent-list"><div class="recent-title">Siste filnavn (Tegning):</div><div id="teg-history">Ingen historikk.</div></div>
+    </div>
+
+    <div id="result-container"><div id="result-text">Klar til å generere...</div></div>
+
+    <div id="drop-zone">☁️ Dra og slipp filen her (Optional)</div>
+
+    <div class="button-grid">
+        <button class="action btn-gen" onclick="generate()">⚙️ Generer Navn</button>
+        <button class="action btn-copy" onclick="copy()">📋 Kopier Navn</button>
+        <button class="action btn-next" onclick="nextNum()">🔢 Neste Nr</button>
+        <button class="action btn-down" onclick="downloadResult()">📥 Download</button>
+    </div>
+
+    <div class="veiledning">
+        <h3>📘 Veiledning for bruk</h3>
+        <ol>
+            <li><b>Velg Modus:</b> Velg enten "Standard Dokument" for FDV eller "Tegning" for tekniske tegninger.</li>
+            <li><b>Fyll ut data:</b> Skriv inn systemnummer, komponentkoder og informasjonstype basert på Statsbyggs PA-anvisninger.</li>
+            <li><b>Generer Navn:</b> Klikk på "Generer Navn" for å se resultatet i den oransje boksen.</li>
+            <li><b>Dra og slipp (Anbefalt):</b> Hvis du har filen klar, dra den direkte til det blå området. Filen vil automatisk lastes ned med det korrekte navnet.</li>
+            <li><b>Neste Nummer:</b> Bruk "Neste Nr" knappen for å raskt øke løpenummeret når du navngir flere filer i serie.</li>
+        </ol>
+    </div>
+</div>
+
+<script>
+    let activeTab = 'std';
+    let history = { std: [], teg: [] };
+
+    const docData = {
+"Attestasjon": [
+    "Dokumentert sluttprøve",
+    "Energiattest",
+    "Ferdigattest",
+    "Internkontroll - elektro",
+    "Kontrollerklæring for installasjon",
+    "Midlertidig brukstillatelse",
+    "Produktsertifikat",
+    "Samsvarserklæring",
+    "Samsvarserklæring for tavle",
+    "Samsvarserklæring prosjektering",
+    "Samsvarserklæring utførelse",
+    "Sertifikat",
+    "Tredjepartskontroll dokumentasjon"
+],       
+        "Beskrivelse": [
+    "Systembeskrivelse",
+    "Teknisk spesifikasjon",
+    "Beskrivelse av drenering",
+    "Beskrivelse av grunn",
+    "Beskrivelse av permanent støttekonstruksjon",
+    "Beskyttelse av vegetasjon og vekstjord",
+    "BIM-leveranseskjema",
+    "Dokumentasjon oppbygging og forankring",
+    "Forvaltningsplan - Kulturminne",
+    "Fundamentering og drenering",
+    "Konstruksjonsbeskrivelse",
+    "Leveransebeskrivelse",
+    "Miljødokumentasjon",
+    "Monteringsanvisning",
+    "Oppbygging og funksjonsbeskrivelse der installasjonen har innebygde funksjoner",
+    "Oppbygging som kuldebroisolering og selvdrenering",
+    "Opplæringsbeskrivelse",
+    "Opplæringsplan",
+    "Plan for prøvedrift",
+    "Prinsipper for grunnforsterkning",
+    "Prosjekteringsrapport",
+    "Prosjektert løsning",
+    "Risiko- og miljøvurdering pga. arbeidsmedium",
+    "Skall-, brann- og terrorsikring der dette er en integrert funksjon",
+    "Sprenging, graving, fylling, grøfter for bunnledning, bærelag og avrettet underlag på grunn",
+    "System- og funksjonsbeskrivelse",
+    "Testprosedyre"
+],
+     
+
+    "Bilde": [
+    "Bilde - kvalitetssikring og verifikasjon"
+   ],
+
+    "Bruksanvisning": [
+    "Betjeningsanvisning","Brukerveiledning"
+   ],
+     
+        "Drift": [
+    "FDV-instruks",
+    "Betjeningsanvisning",
+    "Brøyteplan",
+    "Driftsinstruks",
+    "Driftsplan for bygning",
+    "Driftsplan for utomhus",
+    "Garantidokument",
+    "Instruks - instruert personell",
+    "Renholdsplan",
+    "Renovasjonsplan",
+    "Rutiner for tilsyn og inspeksjon",
+    "Servicerapport"
+],
+
+"Grunninformasjon": [
+    "Grunninformasjon komponent","Grunninformasjon system"
+   ],
+      
+ "Identifikasjon": [
+    "Adresseliste",
+    "Arealoversikt",
+    "Armaturliste",
+    "Beplantningsliste",
+    "Funksjonstabell",
+    "IP-plan",
+    "Komponentliste",
+    "Kursfortegnelse",
+    "Løst inventar",
+    "Lås- og beslagsliste",
+    "Objektlister",
+    "Tavlebestykning",
+    "Tegningsliste",
+    "Varmekabelliste",
+    "Varmeovnsliste"
+  ],
+        "Kravoppnåelse": [
+    "Systembeskrivelse",
+    "Teknisk spesifikasjon",
+    "Akustisk notat",
+    "Beregningsunderlag",
+    "Brannkonsept",
+    "Dagslysberegninger",
+    "Klimaregnskap",
+    "Kravspesifikasjon",
+    "uu-rapport",
+    "Beregningsunderlag og beregninger",
+    "Detaljprosjektering med angivelse av aktuelle krav etter detaljblader og kravspesifikasjoner",
+    "Dispensasjonsvedtak",
+    "Dokumentasjon av gjennomførte tiltak",
+    "Dokumentasjon forurensede masser",
+    "Dokumentasjon injisering",
+    "Energivurdering av tekniske anlegg",
+    "Funksjonskrav og ytelseskrav",
+    "Funksjonskrav, utførelseskrav, omfang, egenskaper og ytelser",
+    "Klimagassberegning",
+    "Lastnotat",
+    "LCC-beregning",
+    "Miljøoppfølgingsplan (MOP)",
+    "Miljøsaneringsrapport",
+    "Programfiler",
+    "Radonrapport",
+    "Rapport som dokumenterer miljøklasse",
+    "Rapport vedr. flom, grunnforhold etc.",
+    "Reguleringsbestemmelse",
+    "Reguleringsplan",
+    "Rekkefølgebetingelse",
+    "Risikoanalyse av arbeidsmedium",
+    "Risikovurderinger",
+    "Stabilitetsberegning",
+    "Stoffkartotek",
+    "TOP",
+    "Utførelse, ytelser og funksjoner",
+    "Utførelse, ytelser, funksjoner og overflater","uu-rapport"
+],
+       
+   "Produktinformasjon": [
+    "Produktdatablad"
+   ],    
+       
+        "Protokoll": [
+    "Måleprotokoll",
+    "Innreguleringsrapport",
+    "Akustikk-målinger",
+    "Besiktigelsesrapport",
+    "Dagslysmålinger",
+    "Datakjøring",
+    "Dokumentasjon av lysmåling",
+    "Dokumentasjon oppheng og innfesting",
+    "Funksjonstestrapport",
+    "Geometri/innmåling av pele",
+    "Geoteknisk rapport",
+    "Igangkjørings- og systemtestprotokoll",
+    "Igangkjøringsprotokoll",
+    "Innmålingsprotokoll",
+    "Innreguleringsprotokoll",
+    "Integrasjonsprotokoll",
+    "Kontrollrapport",
+    "Leverandørens egenkontroll",
+    "Lydmålingsprotokoll",
+    "Oppspenningsprotokoll",
+    "Peleprotokoll",
+    "Poretrykksmåling",
+    "Protokoll - 1-års befaring",
+    "Protokoll - ferdig prøvedrift",
+    "Protokoll - ferdigbefaring",
+    "Protokoll - fullskalatest",
+    "Protokoll - oppstart prøvedrift",
+    "Protokoll - overtagelse",
+    "Protokoll fra målte SFP-verdier",
+    "Protokoll setningsbolter",
+    "Protokoll SPP faktor",
+    "Radioplanleggingsprotokoll",
+    "Radonmålinger",
+    "Rapport fra termofotografering",
+    "RI-notat",
+    "Rystelsesmåling",
+    "Spuntprotokoll",
+    "Stag og oppspenningsprotokoll",
+    "Støymålinger",
+    "Systemtestprotokoll",
+    "Tetthetskontroll",
+    "Tetthetsmålinger",
+    "Trykkprøving",
+    "Utførelse og tetteliste",
+    "Verifikasjonsrapport",
+    "Vibrasjonsmåling"
+],
+         
+        
+        
+        "Tegning": [
+    "Arrangementstegning",
+    "Bunnledning og innmålingstegning",
+    "Dekningskart",
+    "Dørskjema",
+    "Foldeveggsskjema",
+    "Grave- og sprengingsplan",
+    "Kumdetalj",
+    "Orienteringsplan",
+    "Portskjema",
+    "Rømningsplan",
+    "Seksjoneringsplan",
+    "Situasjonsplan",
+    "Som bygget",
+    "Som bygget armeringstegning",
+    "Som bygget brannisolerte bærende konstruksjon",
+    "Som bygget detaljtegning",
+    "Som bygget detaljtegning av typisk snitt",
+    "Som bygget drensledning og stakepunkt",
+    "Som bygget energiflytskjema",
+    "Som bygget energimålingsskjema",
+    "Som bygget fasadetegning",
+    "Som bygget formtegning",
+    "Som bygget fundament- og/eller peleplan",
+    "Som bygget grunnforsterkningstiltak",
+    "Som bygget modell ARK",
+    "Som bygget modell LARK",
+    "Som bygget modell RIB",
+    "Som bygget modell RIE",
+    "Som bygget modell RIV",
+    "Som bygget oversiktstegning med dimensjonerende laster",
+    "Som bygget romskjema",
+    "Som bygget skjemategning",
+    "Som bygget spuntplan",
+    "Som bygget stigeledningsskjema",
+    "Som bygget systemskjema",
+    "Som bygget tavleskjema",
+    "Som bygget tegninger ARK",
+    "Som bygget tegninger LARK",
+    "Som bygget tegninger RIB",
+    "Som bygget tegninger RIE",
+    "Som bygget tegninger RIV",
+    "Som bygget trappeskjema",
+    "Tegninger til byggesak",
+    "Vindusskjema"
+],
+
+ "Vedlikehold": [
+    "Drifts- og vedlikeholdsavtale - brannvarsling",
+    "Drifts- og vedlikeholdsavtale - heis",
+    "Drifts- og vedlikeholdsavtale - nødlys",
+    "Loggbok",
+    "Tilstandsvurdering",
+    "Vedlikeholdsinstruks",
+    "Vedlikeholdsplan for bygning",
+    "Vedlikeholdsplan for utomhus"
+]
+    };
+
+    function showTab(tab) {
+        activeTab = tab;
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tab + '-content').classList.add('active');
+        document.getElementById('tab-' + tab + '-btn').classList.add('active');
+    }
+
+    function populateStdDocs() {
+        const type = document.getElementById('std-info').value;
+        const docSel = document.getElementById('std-doc');
+        docSel.innerHTML = '<option value="">Velg...</option>';
+        if(docData[type]) {
+            docData[type].forEach(d => {
+                let o = document.createElement("option"); o.value = d; o.text = d; docSel.appendChild(o);
+            });
+        }
+    }
+
+    function updateTegStart() {
+        const ext = document.getElementById('teg-ext').value;
+        document.getElementById('teg-run').value = (ext === '.pdf') ? 500 : 1;
+    }
+
+    function generate() {
+        let name = "";
+        if(activeTab === 'std') {
+            const sys = document.getElementById('std-sys').value || "PA0702";
+            const sysRun = document.getElementById('std-sys-run').value.toString().padStart(2, '0');
+            const komp = document.getElementById('std-komp').value;
+            const kompRunRaw = document.getElementById('std-komp-run').value;
+            const kompRun = kompRunRaw ? kompRunRaw.toString().padStart(2, '0') : "";
+            const info = document.getElementById('std-info').value || "INFO";
+            const doc = document.getElementById('std-doc').value || "DOC";
+            const textRaw = document.getElementById('std-text').value.trim();
+            const text = textRaw ? "-" + textRaw.replace(/\s+/g, '-') : "";
+            let compPart = (komp && kompRun) ? `-${komp}${kompRun}` : (komp ? `-${komp}` : "");
+            name = `${sys}.${sysRun}${compPart} ${info} ${doc}${text}.pdf`;
+        } else {
+            const eiendom = document.getElementById('teg-eiendom').value || "1000601";
+            const bygg = document.getElementById('teg-bygg').value || "00";
+            const etasje = document.getElementById('teg-etasje').value || "01";
+            const fag = document.getElementById('teg-fag').value || "A";
+            const sys = document.getElementById('teg-system').value || "360";
+            const type = document.getElementById('teg-type').value;
+            const run = document.getElementById('teg-run').value.toString().padStart(3, '0');
+            const ext = document.getElementById('teg-ext').value;
+            const textRaw = document.getElementById('teg-text').value.trim();
+            const text = textRaw ? "-" + textRaw.replace(/\s+/g, '-') : "";
+            name = `${eiendom}_${bygg}_${etasje}_${fag}_${sys}_${type}_${run}${text}${ext}`;
+        }
+        document.getElementById('result-text').innerText = name;
+        addToHistory(name);
+        return name;
+    }
+
+    function addToHistory(name) {
+        history[activeTab].unshift(name);
+        if(history[activeTab].length > 5) history[activeTab].pop();
+        updateHistoryDisplay();
+    }
+
+    function updateHistoryDisplay() {
+        const container = document.getElementById(activeTab + '-history');
+        container.innerHTML = history[activeTab].map(h => `<div class="recent-item">${h}</div>`).join('');
+    }
+
+    function copy() {
+        const text = document.getElementById('result-text').innerText;
+        navigator.clipboard.writeText(text);
+        alert("Kopiert!");
+    }
+
+    function nextNum() {
+        const id = (activeTab === 'std') ? 'std-sys-run' : 'teg-run';
+        document.getElementById(id).value = parseInt(document.getElementById(id).value) + 1;
+        generate();
+    }
+
+   function downloadResult() {
+    const name = generate();
+    // هنا قمنا بتغيير النوع إلى text/plain
+    const blob = new Blob([name], { type: "text/plain" }); 
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    // إضافة .txt تمنع المتصفح من محاولة فتحه كـ PDF معطل
+    a.download = name + ".txt"; 
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+
+   // Drag and Drop
+    const dropZone = document.getElementById('drop-zone');
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(e => {
+        dropZone.addEventListener(e, (ev) => { ev.preventDefault(); ev.stopPropagation(); });
+    });
+    dropZone.addEventListener('dragover', () => dropZone.classList.add('dragover'));
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => {
+        dropZone.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            const newName = generate();
+            const url = URL.createObjectURL(files[0]);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = newName;
+            a.click();
+            }
+    });
+</script>
+
+</body>
+</html>
