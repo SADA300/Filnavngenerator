@@ -59,6 +59,34 @@
         .veiledning h3 { margin-top: 0; color: var(--statsbygg-blue); border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .veiledning ol { padding-left: 20px; }
         .veiledning li { margin-bottom: 10px; font-size: 14px; }
+
+
+        /* Historikk Tabell og Drop Zone */
+#drop-zone { 
+    margin-top: 20px; 
+    padding: 30px; 
+    border: 2px dashed var(--statsbygg-blue); 
+    border-radius: 12px; 
+    text-align: center; 
+    color: var(--statsbygg-blue); 
+    background: #f0f4f8; 
+    cursor: pointer; 
+    transition: 0.3s; 
+    font-weight: bold; 
+}
+#drop-zone.dragover { background: #dbeafe; border-color: var(--statsbygg-orange); }
+
+.history-section { margin-top: 30px; background: white; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); }
+.history-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+.history-table th { background: var(--statsbygg-blue); color: white; padding: 10px; text-align: left; }
+.history-table td { padding: 10px; border-bottom: 1px solid #eee; }
+.old-name { color: #666; font-style: italic; }
+.new-name { font-weight: bold; color: var(--statsbygg-orange); font-family: monospace; }
+
+
+
+
+
     </style>
 </head>
 <body>
@@ -95,7 +123,10 @@
     <div id="std-content" class="tab-content active">
         <div class="form-grid">
             <div class="form-group"><label>1. Systemnummer</label><input id="std-sys" type="text" placeholder="PA0702"></div>
-            <div class="form-group"><label>2. System Løpenummer</label><input id="std-sys-run" type="number" value="01"></div>
+<div class="form-group">
+    <label>2. System Løpenummer</label>
+    <input id="std-sys-run" type="text" value="001">
+</div>
             <div class="comp-box">
                 <div class="form-group">
                     <label>3. Komponentkode</label>
@@ -433,8 +464,15 @@
                         <option value="Z">Z - Spesielle prosessutstyr for virksomheten.</option>
                     </select>
                 </div>
-                <div class="form-group"><label>4. Komp. Løpenummer</label><input id="std-komp-run" type="number" placeholder="01"></div>
+                
+                
+<div class="form-group">
+    <label>4. Komp. Løpenummer</label>
+    <input id="std-komp-run" type="text" placeholder="001" value="001">
+</div>            
+            
             </div>
+
             <div class="form-group full-width">
                 <label>5. Informasjonstype</label>
                 <select id="std-info" onchange="populateStdDocs()">
@@ -511,7 +549,25 @@
 
     <div id="result-container"><div id="result-text">Klar til å generere...</div></div>
 
-    <div id="drop-zone">☁️ Dra og slipp filen her (Opsjon)</div>
+   <div id="drop-zone">
+    📁 Dra filen hit for å logge navneendring <br>
+    <small>(Husk å generere navn først)</small>
+</div>
+
+<div class="history-section">
+    <h3 style="margin-top:0; color: var(--statsbygg-blue);">📜 Navnehistorikk</h3>
+    <table class="history-table">
+        <thead>
+            <tr>
+                <th>Tid</th>
+                <th>Gammelt filnavn</th>
+                <th>Nytt Statsbygg-navn</th>
+            </tr>
+        </thead>
+        <tbody id="history-body">
+            </tbody>
+    </table>
+</div>
 
     <div class="button-grid">
         <button class="action btn-gen" onclick="generate()">⚙️ Generer Navn</button>
@@ -830,7 +886,7 @@
             const ext = document.getElementById('teg-ext').value;
             const textRaw = document.getElementById('teg-text').value.trim();
             const text = textRaw ? "-" + textRaw.replace(/\s+/g, '-') : "";
-            name = `${eiendom}_${bygg}_${etasje}_${fag}_${sys}_${type}_${run}${text}${ext}`;
+            name = `${eiendom}-${bygg}-${etasje}-${fag}-${sys}-${type}-${run}${text}${ext}`;
         }
         document.getElementById('result-text').innerText = name;
         addToHistory(name);
@@ -855,9 +911,17 @@
     }
 
     function nextNum() {
-        const id = (activeTab === 'std') ? 'std-sys-run' : 'teg-run';
-        document.getElementById(id).value = parseInt(document.getElementById(id).value) + 1;
-        generate();
+       const id = (activeTab === 'std') ? 'std-sys-run' : 'teg-run';
+let input = document.getElementById(id);
+
+// 1. زيادة الرقم بمقدار 1
+let nextValue = parseInt(input.value || 0) + 1;
+
+// 2. تحويل الرقم إلى نص مكون من 3 خانات (هذا هو التعديل الأهم)
+input.value = nextValue.toString().padStart(3, '0');
+
+// 3. تحديث الاسم المولد
+generate();
     }
 
    function downloadResult() {
@@ -873,26 +937,75 @@
     URL.revokeObjectURL(url);
 }
 
+const myDropZone = document.getElementById('drop-zone');
+const myHistoryBody = document.getElementById('history-body');
 
-   // Drag and Drop
-    const dropZone = document.getElementById('drop-zone');
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(e => {
-        dropZone.addEventListener(e, (ev) => { ev.preventDefault(); ev.stopPropagation(); });
+if (myDropZone) {
+    // 1. Forhindre standard nettleser-oppførsel (viktig for at drop skal virke)
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        myDropZone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        }, false);
     });
-    dropZone.addEventListener('dragover', () => dropZone.classList.add('dragover'));
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-    dropZone.addEventListener('drop', (e) => {
-        dropZone.classList.remove('dragover');
+
+    // 2. Visuelle effekter når man drar filen over boksen
+    myDropZone.addEventListener('dragover', () => {
+        myDropZone.classList.add('dragover');
+    });
+
+    myDropZone.addEventListener('dragleave', () => {
+        myDropZone.classList.remove('dragover');
+    });
+
+    // 3. Selve handlingen når filen slippes
+    myDropZone.addEventListener('drop', (e) => {
+        myDropZone.classList.remove('dragover');
+        
         const files = e.dataTransfer.files;
+        // Henter navnet fra den oransje resultat-boksen din
+        const generatedName = document.getElementById('result-text').innerText;
+
+        // Sjekk om et navn faktisk er generert
+        if (!generatedName || generatedName.includes("---") || generatedName === "") {
+            alert("Vennligst fyll ut feltene og generer et navn først!");
+            return;
+        }
+
         if (files.length > 0) {
-            const newName = generate();
-            const url = URL.createObjectURL(files[0]);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = newName;
-            a.click();
-            }
+            Array.from(files).forEach(file => {
+                // A. Finn tidspunkt for logging
+                const nå = new Date();
+                const tid = nå.getHours().toString().padStart(2, '0') + ":" + 
+                            nå.getMinutes().toString().padStart(2, '0');
+                
+                // B. Oppdater historikk-tabellen (hvis den finnes)
+                if (myHistoryBody) {
+                    const rad = document.createElement('tr');
+                    rad.innerHTML = `
+                        <td>${tid}</td>
+                        <td class="old-name" style="color: #666; font-style: italic;">${file.name}</td>
+                        <td class="new-name" style="font-weight: bold; color: var(--statsbygg-orange);">${generatedName}</td>
+                    `;
+                    // Legger den nyeste øverst
+                    myHistoryBody.insertBefore(rad, myHistoryBody.firstChild);
+                }
+
+                // C. Start nedlasting av filen med det nye navnet
+                const url = URL.createObjectURL(file);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = generatedName; 
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        }
     });
+}
+   
+
+
+
 </script>
 
 </body>
