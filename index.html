@@ -17,7 +17,7 @@
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 25px; }
 
 
-       /* تنسيق الشعار الجديد */
+       /* logo*/
         .logo-svg { height: 35px; width: auto;display: block; }
         .developer-credit { text-align: right; font-size: 14px; }
         .developer-credit b { color: var(--statsbygg-blue); }
@@ -43,11 +43,48 @@
         #drop-zone { margin-top: 20px; padding: 30px; border: 2px dashed var(--statsbygg-blue); border-radius: 12px; text-align: center; color: var(--statsbygg-blue); background: #f0f4f8; cursor: pointer; transition: 0.3s; font-weight: bold; }
         #drop-zone.dragover { background: #dbeafe; border-color: var(--statsbygg-orange); }
 
-        .button-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 20px; }
-        button.action { padding: 12px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .btn-gen { background: var(--statsbygg-blue); color: white; }
-        .btn-copy { background: #607d8b; color: white; }
-        .btn-next { background: var(--statsbygg-orange); color: white; }
+        .button-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+    gap: 10px; 
+    margin-top: 20px; 
+}
+button.action { 
+    padding: 12px; 
+    border: none; 
+    border-radius: 6px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: 0.2s; 
+}
+/* Generer filnavn - RØD */
+.btn-gen { 
+    background: #d32f2f; /* En tydelig rød farge */
+    color: white; 
+}
+/* Kopier navn - HVIT */
+.btn-copy { 
+    background: rgb(248, 243, 243); 
+    color: #333; /* Mørk tekst så den kan leses */
+    border: 1px solid #ccc; /* En tynn ramme så knappen synes */
+}
+/* Neste filnavn - HVIT */
+.btn-next { 
+    background: rgb(248, 243, 243); 
+    color: #333; 
+    border: 1px solid #ccc; 
+}
+/* Last-ned - GRØNN */
+.btn-down { 
+    background: #2e7d32; /* En fin grønnfarge */
+    color: white; 
+}
+/* Hover-effekter (valgfritt, men anbefalt) */
+button.action:hover {
+    opacity: 0.9;
+}
+
+        
 
         .recent-list { margin-top: 15px; background: #f9f9f9; padding: 10px; border-radius: 6px; border-left: 4px solid var(--statsbygg-blue); }
         .recent-title { font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #666; }
@@ -118,11 +155,11 @@
     </h2>
 
     <p style="font-size: 14px; color: #1d2c4d; margin-top: 15px; font-weight: 500;">
-        Denne generatoren er utviklet i henhold til Statsbyggs prosjekteringsanvisninger for å sikre en enhetlig dokumentasjonsstruktur. 
+       Denne generatøren ble utviklet som verktøy for å hjelpe sikre standardisert dokument og filnavn struktur.
     </p>
     
     <p style="font-size: 14px; color: #445; margin-bottom: 20px;">
-        Vennligst benytt dokumentene under som referanse for å identifisere korrekt informasjonstype og tegningsnummerering før utfylling:
+       Bruk gjeldende prosjekteringsanvisninger (PA) nedenfor som referanse for utfylling av informasjon.
     </p>
 
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
@@ -132,7 +169,7 @@
            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';" 
            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
             <b style="display: block; font-size: 14px;">PA0702 Vedlegg 1.1</b>
-            <span style="font-size: 12px; color: #666;">Dokumentasjonskrav iht. TFM (PDF rev9)</span>
+            <span style="font-size: 12px; color: #666;">Dokumentasjonskrav iht. TFM (PA0802)</span>
         </a>
 
         <a href="https://dok.statsbygg.no/wp-content/uploads/2024/06/PA-0603-2D-DAK-tegninger-2024.pdf" 
@@ -140,37 +177,156 @@
            style="text-decoration: none; color: #1d2c4d; background: #ffffff; padding: 15px; border: 1px solid #cfe2f3; border-left: 5px solid #ef6c00; border-radius: 6px; transition: all 0.2s ease;"
            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';" 
            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-            <b style="display: block; font-size: 14px;">PA0603 Krav</b>
-            <span style="font-size: 12px; color: #666;">Standard for 2D-DAK Tegninger (PDF 2024)</span>
+            <b style="display: block; font-size: 14px;">PA0603 </b>
+            <span style="font-size: 12px; color: #666;">2D DAK-Tegninger (2024)</span>
         </a>
     </div>
 
     <div style="font-size: 13px; color: #856404; background: #fff4e5; padding: 15px; border-radius: 6px; border: 1px solid #ffeeba; margin-top: 10px;">
         <strong style="color: #ef6c00; text-transform: uppercase; font-size: 12px;">Merk:</strong> 
-        System- og løpenummer skal samsvare med bygningsdelens plassering i <strong>MMFM</strong>. 
-        Komplett oversikt over alle anvisninger finnes på 
-        <a href="https://www.statsbygg.no/publikasjoner" target="_blank" style="color: #1d2c4d; text-decoration: underline; font-weight: bold;">statsbygg.no/publikasjoner</a>.
+        Du kan finne alle relevante prosjekteringsanvisninger i Statsbygg her: 
+               <a href="https://www.statsbygg.no/publikasjoner" target="_blank" style="color: #1d2c4d; text-decoration: underline; font-weight: bold;">statsbygg.no/publikasjoner</a>.
     </div>
 </div>
 
 
-
-
-
-
-
-
-
-
-        
+     
     <div class="tab-wrapper">
-        <button id="tab-std-btn" class="tab-btn active" onclick="showTab('std')">📂 Filnavnegenerator (PA0702)</button>
-        <button id="tab-teg-btn" class="tab-btn" onclick="showTab('teg')">📐 Navnegenerator for Tegning (PA0603)</button>
-    </div>
-
-    <div id="std-content" class="tab-content active">
+        <button id="tab-std-btn" class="tab-btn active" onclick="showTab('std')"> Filnavn generatør (PA0702)</button>
+        <button id="tab-teg-btn" class="tab-btn" onclick="showTab('teg')"> Filnavn generatør for tegning (PA0603)</button>
+     </div>
+        
+   <div id="std-content" class="tab-content active">
         <div class="form-grid">
-            <div class="form-group"><label>1. Systemnummer</label><input id="std-sys" type="text" placeholder="PA0702"></div>
+           <div class="form-group">
+    <label>1. Systemkode</label>
+    <input id="std-sys" list="systemliste" type="text" placeholder="Legg-inn systemkode (PA0702)">
+    <datalist id="systemliste">
+        <option value="111">Kjøpskontrakter</option>
+        <option value="112">Leiekontrakter</option>
+        <option value="113">Drifts- og vedlikeholdsavtaler</option>
+        <option value="115">Garantidokumenter</option>
+        <option value="116">Protokoller</option>
+        <option value="117">Adresselister</option>
+        <option value="118">Forsikringer</option>
+        <option value="119">Kulturminnedokumentasjon</option>
+        <option value="121">Matrikkelinformasjon</option>
+        <option value="122">Seksjoneringsplan</option>
+        <option value="123">Offentlige rettslige betingelser</option>
+        <option value="124">Ferdigattest og brukstillatelse</option>
+        <option value="131">Tomtebefaring</option>
+        <option value="132">Beskyttelse av vegetasjon og vekstjord</option>
+        <option value="133">Målinger og rapporter fra tomt</option>
+        <option value="141">Energiberegninger</option>
+        <option value="142">Bærekraftberegninger</option>
+        <option value="143">Statiske beregninger</option>
+        <option value="144">Inneklima</option>
+        <option value="145">Målinger</option>
+        <option value="146">Tilpasningsdyktighet</option>
+        <option value="147">Entreprisebeskrivelser</option>
+        <option value="148">Diverse notater og rapporter</option>
+        <option value="151">Miljøkonsept</option>
+        <option value="152">Miljøsertifisering</option>
+        <option value="153">Klimaregnskap</option>
+        <option value="154">Energiattest</option>
+        <option value="155">Miljøkartlegging og sanering</option>
+        <option value="156">Skadedyr</option>
+        <option value="161">Offentlige planer og regulering</option>
+        <option value="162">Situasjonsplan</option>
+        <option value="163">Som bygget tegninger</option>
+        <option value="164">Tegninger til byggesak</option>
+        <option value="165">Modeller</option>
+        <option value="171">Brannkonsept</option>
+        <option value="172">Rømningsplan</option>
+        <option value="173">Orienteringsplan</option>
+        <option value="181">Sikkerhet mot naturpåkjenning</option>
+        <option value="182">Graderingsspesifikasjon</option>
+        <option value="183">Andre sikkerhetsvurderinger</option>
+        <option value="191">Drifts- og vedlikeholdsplan bygg</option>
+        <option value="192">Opplæringsplaner</option>
+        <option value="193">Renholdsplan</option>
+        <option value="194">Renovasjonsplan</option>
+        <option value="195">Prøvedrift</option>
+        <option value="196">Brøyteplan</option>
+        <option value="197">Drifts- og vedlikeholdsplan utomhus</option>
+        <option value="198">Tilstandsvurdering</option>
+        <option value="200">Bygg generelt / Bæresystemer</option>
+        <option value="211">Klargjøring av tomt</option>
+        <option value="212">Byggegrop</option>
+        <option value="213">Grunnforsterkning</option>
+        <option value="214">Støttekonstruksjoner</option>
+        <option value="215">Pelefundamentering</option>
+        <option value="216">Direkte fundamentering</option>
+        <option value="217">Drenering</option>
+        <option value="221">Rammer</option>
+        <option value="222">Søyler</option>
+        <option value="223">Bjelker</option>
+        <option value="224">Avstivede konstruksjoner</option>
+        <option value="225">Brannbeskyttelse av bæresystem</option>
+        <option value="226">Kledning og overflate (bæring)</option>
+        <option value="231">Bærende yttervegger</option>
+        <option value="232">Ikke-bærende yttervegger</option>
+        <option value="233">Glassfasader</option>
+        <option value="234">Vinduer, dører og porter (utv.)</option>
+        <option value="235">Utvendig kledning og overflate</option>
+        <option value="236">Innvendig overflate (yttervegg)</option>
+        <option value="237">Solavskjerming</option>
+        <option value="241">Bærende innervegger</option>
+        <option value="242">Ikke-bærende innervegger</option>
+        <option value="243">Systemvegger og glassfelt</option>
+        <option value="244">Vinduer, dører og foldevegger (inn.)</option>
+        <option value="245">Skjørt</option>
+        <option value="246">Kledning og overflate (innervegg)</option>
+        <option value="251">Frittbærende dekker</option>
+        <option value="252">Gulv på grunn / bunnplate</option>
+        <option value="253">Oppfôret gulv og påstøp</option>
+        <option value="254">Systemgulv</option>
+        <option value="255">Gulvoverflate</option>
+        <option value="256">Faste himlinger</option>
+        <option value="257">Systemhimlinger</option>
+        <option value="261">Primærkonstruksjon yttertak</option>
+        <option value="262">Taktekking</option>
+        <option value="263">Glasstak og overlys</option>
+        <option value="264">Takoppbygg</option>
+        <option value="265">Gesimser og takrenner</option>
+        <option value="266">Himling og overflate (tak)</option>
+        <option value="267">Prefabrikkerte takelementer</option>
+        <option value="271">Murte piper og ildsteder</option>
+        <option value="272">Monteringsferdige ildsteder</option>
+        <option value="273">Kjøkkeninnredning</option>
+        <option value="274">Våtromsinnredning</option>
+        <option value="275">Skap og reoler</option>
+        <option value="276">Sittebenker og bord</option>
+        <option value="277">Skilt og tavler</option>
+        <option value="281">Innvendige trapper</option>
+        <option value="282">Utvendige trapper</option>
+        <option value="283">Ramper</option>
+        <option value="284">Balkonger og verandaer</option>
+        <option value="285">Tribuner og amfier</option>
+        <option value="286">Baldakiner og skjermtak</option>
+        <option value="287">Rekkverk og håndlister</option>
+        <option value="291">Hull og tettinger</option>
+        <option value="300">VVS-installasjoner generelt</option>
+        <option value="310">Sanitæranlegg</option>
+        <option value="311">Bunnledninger sanitær</option>
+        <option value="320">Varmeanlegg</option>
+        <option value="331">Manuell brannslokking (vann)</option>
+        <option value="332">Sprinkleranlegg</option>
+        <option value="333">Vanntåkeanlegg</option>
+        <option value="334">Pulverslokkeanlegg</option>
+        <option value="335">Gasslokkeanlegg</option>
+        <option value="336">Skumslokkeanlegg</option>
+        <option value="337">Håndslukkere</option>
+        <option value="341">Gassanlegg bygningsdrift</option>
+        <option value="342">Gassanlegg virksomhet</option>
+        <option value="343">Medisinske gasser</option>
+        <option value="345">Trykkluftanlegg</option>
+    </datalist>
+</div>
+
+            
+
+
 <div class="form-group">
     <label>2. System Løpenummer</label>
     <input id="std-sys-run" type="text" value="001">
@@ -318,7 +474,7 @@
                         <option value="KU">KU - Kombinert kabel</option>
                         <option value="KV">KV - Høyspenningskabel > 1000V</option>
                         <option value="KW">KW - Lavspenningskabel 50 til 1000V</option>
-                        <option value="KX">KX - Lavspenningskabel < 50V</option>
+                        <option value="KX">KX - Lavspenningskabel  50V</option>
                         <option value="KY">KY - Optisk kabel</option>
                         <option value="KZ">KZ - Slange</option>
                         <option value="L">L - Omformende / Vekslende</option>
@@ -539,7 +695,7 @@
                     <option value="Vedlikehold">Vedlikehold</option>
                 </select>
             </div>
-            <div class="form-group full-width"><label>6. Dokumenttype</label><select id="std-doc"><option value="">Velg type først...</option></select></div>
+            <div class="form-group full-width"><label>6. Dokumenttype</label><select id="std-doc"><option value="">Velg informasjonstype først...</option></select></div>
             <div class="form-group full-width"><label>7. Fritekst (Valgfritt)</label><input id="std-text" type="text"></div>
         </div>
         <div class="recent-list"><div class="recent-title">Siste filnavn (Standard):</div><div id="std-history">Ingen historikk.</div></div>
@@ -547,7 +703,7 @@
 
     <div id="teg-content" class="tab-content">
         <div class="form-grid">
-            <div class="form-group"><label>1. Eiendomsnummer</label><input id="teg-eiendom" type="text" placeholder="1000601"></div>
+            <div class="form-group"><label>1. Eiendomsnummer</label><input id="teg-eiendom" type="text" placeholder="legg  Eiendomnsnummer"></div>
             <div class="form-group"><label>2. Byggnummer</label><input id="teg-bygg" type="text" value="00"></div>
             <div class="form-group"><label>3. Etasje</label><input id="teg-etasje" type="text" placeholder="01"></div>
             <div class="form-group">
@@ -602,27 +758,29 @@
     <small>(Husk å generere navn først)</small>
 </div>
 
+
+
+    <div class="button-grid">
+        <button class="action btn-gen" onclick="generate()"> Generer filnavn</button>
+        <button class="action btn-copy" onclick="copy()"> kopier navn</button>
+        <button class="action btn-next" onclick="nextNum()"> Neste filnavn løpenummer</button>
+        <button class="action btn-down" onclick="downloadResult()"> Last-ned</button>
+    </div>
+
 <div class="history-section">
-    <h3 style="margin-top:0; color: var(--statsbygg-blue);">📜 Navnehistorikk</h3>
+    <h3 style="margin-top:0; color: var(--statsbygg-blue);"> Navnehistorikk</h3>
     <table class="history-table">
         <thead>
             <tr>
-                <th>Tid</th>
+                <th>Dato</th> <th>Tid</th>
                 <th>Gammelt filnavn</th>
-                <th>Nytt Statsbygg-navn</th>
+                <th>Nytt dokument/filnavn</th>
             </tr>
         </thead>
         <tbody id="history-body">
-            </tbody>
+        </tbody>
     </table>
 </div>
-
-    <div class="button-grid">
-        <button class="action btn-gen" onclick="generate()">⚙️ Generer Navn</button>
-        <button class="action btn-copy" onclick="copy()">📋 Kopier Navn</button>
-        <button class="action btn-next" onclick="nextNum()">🔢 Neste Nr</button>
-        <button class="action btn-down" onclick="downloadResult()">📥 Download</button>
-    </div>
 
     <div class="veiledning">
         <h3>📘 Veiledning for bruk</h3>
@@ -925,7 +1083,7 @@
             name = `${sys}.${sysRun}${compPart} ${info} ${doc}${text}.pdf`;
         } else {
             const eiendom = document.getElementById('teg-eiendom').value || "1000601";
-            const bygg = document.getElementById('teg-bygg').value || "00";
+            const bygg = document.getElementById('teg-bygg').value || "000000";
             const etasje = document.getElementById('teg-etasje').value || "01";
             const fag = document.getElementById('teg-fag').value || "A";
             const sys = document.getElementById('teg-system').value || "360";
