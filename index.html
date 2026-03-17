@@ -327,11 +327,53 @@ button.action:hover {
 <option value="343">Medisinske gasser</option>
 <option value="345">Trykkluftanlegg</option>
 <option value="360">Luftbehandlingsanlegg</option>
+<option value="361">Luftbehandlingsaggregat</option>
+<option value="362">Kanalanlegg</option>
+<option value="363">Luftfordelingsutstyr</option>
+<option value="364">Kjøling for luftbehandling</option>
+<option value="365">Styring og overvåking (VVS)</option>
+<option value="400">Elektroinstallasjoner generelt</option>
+<option value="410">Høyspent forsyning</option>
+<option value="420">Lavspent forsyning (Inntak)</option>
 <option value="430">Lavspent elkraft</option>
+<option value="431">Hovedfordeling lavspent</option>
+<option value="432">Underfordeling</option>
+<option value="433">Basisinstallasjoner for elkraft</option>
+<option value="440">Lys og varme</option>
+<option value="441">Lysarmaturer</option>
+<option value="442">Nødlys</option>
+<option value="443">Utendørs belysning</option>
+<option value="450">Elvarme</option>
+<option value="500">Tele og automatisering generelt</option>
+<option value="510">Basisinstallasjoner for tele</option>
+<option value="520">Telenett og ekstern kommunikasjon</option>
+<option value="530">Informasjonssystemer (Skilt/Tavler)</option>
+<option value="540">Integrerte sikkerhetsanlegg</option>
+<option value="541">Brannalarm</option>
+<option value="542">Nød- og varslingsanlegg</option>
+<option value="543">Adgangskontroll og innbruddsalarm</option>
+<option value="544">TV-overvåking (CCTV)</option>
+<option value="545">Pasientvarsling</option>
+<option value="550">Multimedia (AV-utstyr)</option>
 <option value="560">Automatisering (SD-anlegg)</option>
+<option value="561">Sentralt driftsanlegg</option>
+<option value="562">Lokal automatisering</option>
+<option value="600">Andre installasjoner generelt</option>
 <option value="610">Heiser og transport</option>
+<option value="611">Personheiser</option>
+<option value="612">Vareheiser</option>
+<option value="620">Kjøkkenutstyr og hvitevarer</option>
+<option value="630">Vaskeriutstyr</option>
+<option value="640">Spesialutstyr (f.eks. sykehus/lab)</option>
+<option value="700">Utendørs generelt</option>
 <option value="710">Veg og plasser</option>
-
+<option value="720">Grøntanlegg og vegetasjon</option>
+<option value="730">Utendørs konstruksjoner</option>
+<option value="740">Utendørs VVS-anlegg</option>
+<option value="750">Utendørs elkraft</option>
+<option value="760">Utendørs tele og automatisering</option>
+<option value="770">Utendørs avfallshåndtering</option>
+<option value="780">Utendørs sikring og gjerder</option>
     </datalist>
 </div>
 
@@ -763,11 +805,12 @@ button.action:hover {
 
     <div id="result-container"><div id="result-text">Klar til å generere...</div></div>
 
-   <div id="drop-zone">
-    📁 Dra filen hit for å logge navneendring <br>
+   
+<div id="drop-zone">
+    📁 <b>Dra og slipp filen her</b>
+    <br>
     <small>(Husk å generere navn først)</small>
 </div>
-
 
 
     <div class="button-grid">
@@ -795,11 +838,19 @@ button.action:hover {
     <div class="veiledning">
         <h3>📘 Veiledning for bruk</h3>
         <ol>
-            <li><b>Velg Modus:</b> Velg enten "Filnavnegenerator (PA0702)" for FDV dokumentasjon eller "Navnegenerator for Tegning (PA0603)" for  tegninger.</li>
-            <li><b>Fyll ut data:</b> Skriv inn systemnummer, komponentkoder og informasjonstype basert på Statsbyggs PA-anvisninger.</li>
-            <li><b>Generer Navn:</b> Klikk på "Generer Navn" for å se resultatet i den oransje boksen.</li>
+            <li><b>Velg Modus:</b> Velg enten "Filnavn generatør (PA0702)" for FDV dokumentasjon eller "Filnavn generatør for tegning (PA0603)" for  tegninger.</li>
+          
+
+                                    <li><b>Fyll ut data:</b> Skriv inn informasjon basert på valgt modus:
+    <ul>
+        <li><i>Filnavn generatør (PA0702):</i> Skriv inn systemkode, komponentkoder og informasjonstype og dokumenttype basert på Statsbyggs PA-anvisninger</li>
+        <li><i>Filnavn generatør for tegning (PA0603):</i> skriv inn eiendomnummer,byggnummer,etasje,fag,systemkode,tegningstype, løpenummer basert på Statsbyggs PA-anvisninger.</li>
+    </ul>
+</li>
+
+            <li><b>Generer filnavn:</b> Klikk på "Genererfilnavn" for å se resultatet i den oransje boksen.</li>
             <li><b>Dra og slipp (Anbefalt):</b> Hvis du har filen klar, dra den direkte til det blå området. Filen vil automatisk lastes ned med det korrekte navnet.</li>
-            <li><b>Neste Nummer:</b> Bruk "Neste Nr" knappen for å raskt øke løpenummeret når du navngir flere filer i serie.</li>
+            <li><b>Neste filnavn løpenummer:</b> Bruk "Neste filnavn løpenummer" knappen for å raskt øke løpenummeret når du navngir flere filer i serie.</li>
         </ol>
     </div>
 </div>
