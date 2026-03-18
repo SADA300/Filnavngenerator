@@ -1266,6 +1266,7 @@ if (myDropZone) {
             Array.from(files).forEach(file => {
                 // A. Finn tidspunkt for logging
                 const nå = new Date();
+                const dato = nå.toLocaleDateString();
                 const tid = nå.getHours().toString().padStart(2, '0') + ":" + 
                             nå.getMinutes().toString().padStart(2, '0');
                 
@@ -1273,6 +1274,7 @@ if (myDropZone) {
                 if (myHistoryBody) {
                     const rad = document.createElement('tr');
                     rad.innerHTML = `
+                       <td>${dato}</td>
                         <td>${tid}</td>
                         <td class="old-name" style="color: #666; font-style: italic;">${file.name}</td>
                         <td class="new-name" style="font-weight: bold; color: var(--statsbygg-orange);">${generatedName}</td>
