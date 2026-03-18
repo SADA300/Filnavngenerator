@@ -123,7 +123,29 @@ button.action:hover {
 .new-name { font-weight: bold; color: var(--statsbygg-orange); font-family: monospace; }
 
 
+.veiledning {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1d2c4d;
+    margin-bottom: 25px;
+    /* Viktige linjer for å fikse problemet ditt: */
+    max-width: 100%;           /* Sørger for at boksen ikke blir bredere enn siden */
+    box-sizing: border-box;    /* Inkluderer padding i bredden */
+}
 
+.veiledning ol, .veiledning ul {
+    padding-left: 20px;        /* Gir plass til numre/punkter */
+    margin: 10px 0;
+}
+
+.veiledning li {
+    margin-bottom: 10px;
+    line-height: 1.5;          /* Gjør teksten lettere å lese */
+    word-wrap: break-word;     /* Bryter lange ord */
+    overflow-wrap: break-word; /* Sikrer at tekst ikke går ut av boksen */
+    white-space: normal;       /* Tvinger teksten til å bytte linje */
+}
 
 
     </style>
@@ -835,24 +857,25 @@ button.action:hover {
     </table>
 </div>
 
-    <div class="veiledning">
-        <h3>📘 Veiledning for bruk</h3>
-        <ol>
-            <li><b>Velg Modus:</b> Velg enten "Filnavn generatør (PA0702)" for FDV dokumentasjon eller "Filnavn generatør for tegning (PA0603)" for  tegninger.</li>
-          
+ <div class="veiledning">
+    <h3>📘 Veiledning for bruk</h3>
+    <ol>
+        <li><b>Velg Modus:</b> Velg enten "Filnavn generatør (PA0702)" for FDV dokumentasjon eller "Filnavn generatør for tegning (PA0603)" for tegninger.</li>
+        
+        <li><b>Fyll ut data:</b> Skriv inn informasjon basert på valgt modus:
+            <ul style="margin-top: 5px;">
+                <li><i>Filnavn generatør (PA0702):</i> Skriv inn systemkode, komponentkoder, informasjonstype og dokumenttype basert på Statsbyggs PA-anvisninger.</li>
+                <li><i>Filnavn generatør for tegning (PA0603):</i> Skriv inn eiendomnummer, byggnummer, etasje, fag, systemkode, tegningstype og løpenummer.</li>
+            </ul>
+        </li>
 
-                                    <li><b>Fyll ut data:</b> Skriv inn informasjon basert på valgt modus:
-    <ul>
-        <li><i>Filnavn generatør (PA0702):</i> Skriv inn systemkode, komponentkoder og informasjonstype og dokumenttype basert på Statsbyggs PA-anvisninger</li>
-        <li><i>Filnavn generatør for tegning (PA0603):</i> skriv inn eiendomnummer,byggnummer,etasje,fag,systemkode,tegningstype, løpenummer basert på Statsbyggs PA-anvisninger.</li>
-    </ul>
-</li>
-
-            <li><b>Generer filnavn:</b> Klikk på "Genererfilnavn" for å se resultatet i den oransje boksen.</li>
-            <li><b>Dra og slipp (Anbefalt):</b> Hvis du har filen klar, dra den direkte til det blå området. Filen vil automatisk lastes ned med det korrekte navnet.</li>
-            <li><b>Neste filnavn løpenummer:</b> Bruk "Neste filnavn løpenummer" knappen for å raskt øke løpenummeret når du navngir flere filer i serie.</li>
-        </ol>
-    </div>
+        <li><b>Generer filnavn:</b> Klikk på "Generer filnavn" for å se resultatet i den oransje boksen.</li>
+        
+        <li><b>Dra og slipp (Anbefalt):</b> Hvis du har filen klar, dra den direkte til det blå området. Filen vil automatisk lastes ned med det korrekte navnet.</li>
+        
+        <li><b>Neste filnavn løpenummer:</b> Bruk "Neste filnavn løpenummer"-knappen for å raskt øke løpenummeret når du navngir flere filer i serie.</li>
+    </ol>
+</div>
 </div>
 
 <script>
