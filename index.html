@@ -84,6 +84,58 @@ button.action:hover {
     opacity: 0.9;
 }
 
+
+        .download-popup {
+            display: none;
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            width: min(380px, calc(100vw - 32px));
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+            z-index: 1000;
+            overflow: hidden;
+        }
+        .download-popup.open { display: block; }
+        .download-popup-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            background: #f7fafc;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .download-popup-title {
+            font-weight: 700;
+            color: var(--statsbygg-blue);
+            font-size: 15px;
+        }
+        .download-popup-close {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 22px;
+            line-height: 1;
+            color: #475569;
+            padding: 0 4px;
+        }
+        .download-popup-body {
+            padding: 16px;
+            display: grid;
+            gap: 12px;
+        }
+        .download-popup-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.2);
+            z-index: 999;
+        }
+        .download-popup-backdrop.open { display: block; }
+
+
         
 
         .recent-list { margin-top: 15px; background: #f9f9f9; padding: 10px; border-radius: 6px; border-left: 4px solid var(--statsbygg-blue); }
@@ -779,7 +831,53 @@ button.action:hover {
         <div class="form-grid">
             <div class="form-group"><label>1. Eiendomsnummer</label><input id="teg-eiendom" type="text" placeholder="legg-inn Eiendomnsnummer"></div>
             <div class="form-group"><label>2. Byggnummer</label><input id="teg-bygg" type="text" placeholder="legg-inn Byggnummer"></div>
-            <div class="form-group"><label>3. Etasje</label><input id="teg-etasje" type="text" placeholder="legg-inn Etasjenummer"></div>
+           <div class="form-group">
+    <label>3. Etasje</label>
+    <input id="teg-etasje" type="text" placeholder="legg-inn Etasjenummer">
+</div>
+<div class="form-group">
+    <label>3. Etasje</label>
+    <select id="teg-etasje">
+        <option value="">Velg etasje...</option>
+
+        <!-- Underetasje -->
+        <option value="02U">02U - 2. Underetasje</option>
+        <option value="01U">01U - 1. Underetasje</option>
+        <option value="00U">00U - Underetasje</option>
+
+        <!-- Over bakken -->
+        <option value="01">01 - 1. etasje</option>
+        <option value="02">02 - 2. etasje</option>
+        <option value="03">03 - 3. etasje</option>
+        <option value="04">04 - 4. etasje</option>
+        <option value="05">05 - 5. etasje</option>
+        <option value="06">06 - 6. etasje</option>
+        <option value="07">07 - 7. etasje</option>
+        <option value="08">08 - 8. etasje</option>
+        <option value="09">09 - 9. etasje</option>
+        <option value="10">10 - 10. etasje</option>
+        <option value="11">11 - 11. etasje</option>
+        <option value="12">12 - 12. etasje</option>
+        <option value="13">13 - 13. etasje</option>
+        <option value="14">14 - 14. etasje</option>
+        <option value="15">15 - 15. etasje</option>
+        <option value="16">16 - 16. etasje</option>
+        <option value="17">17 - 17. etasje</option>
+        <option value="18">18 - 18. etasje</option>
+        <option value="19">19 - 19. etasje</option>
+        <option value="20">20 - 20. etasje</option>
+
+        <!-- Loft / Tak -->
+        <option value="04L">04L - Loft</option>
+        <option value="05T">05T - Tak</option>
+
+        <!-- Spesial -->
+        <option value="XX">XX - Ikke knyttet til etasje</option>
+    </select>
+</div>
+
+
+
             <div class="form-group">
                 <label>4. Fag</label>
                 <select id="teg-fag">
@@ -829,17 +927,35 @@ button.action:hover {
 
    
 <div id="drop-zone">
-    📁 <b>Dra og slipp filen her</b>
+    📁 <b>Dra og slipp filer her eller klikk for å velge</b>
     <br>
-    <small>(Husk å generere navn først)</small>
+    <small>(Du kan velge flere filer samtidig)</small>
 </div>
 
+<input id="file-input" type="file" multiple hidden>
+
+<div id="download-settings" style="margin-top: 15px; display: none; grid-template-columns: 1fr 1fr; gap: 12px;">
+    <div>
+        <label for="download-mode">Nedlastingsmodus</label>
+        <select id="download-mode">
+            <option value="fast">Rask nedlasting</option>
+            <option value="choose">Velg hvor filen skal lagres</option>
+        </select>
+    </div>
+    <div>
+        <label for="multi-mode">Flere filer</label>
+        <select id="multi-mode">
+            <option value="number">Legg til løpenummer automatisk</option>
+            <option value="same">Bruk samme navn og behold filtype</option>
+        </select>
+    </div>
+</div>
 
     <div class="button-grid">
         <button class="action btn-gen" onclick="generate()"> Generer filnavn</button>
         <button class="action btn-copy" onclick="copy()"> kopier navn</button>
         <button class="action btn-next" onclick="nextNum()"> Neste filnavn løpenummer</button>
-        <button class="action btn-down" onclick="downloadResult()"> Last-ned</button>
+        <button id="download-mode-btn" class="action btn-down" onclick="toggleDownloadSettings()"> Nedlast modus</button>
     </div>
 
 <div class="history-section">
@@ -857,23 +973,43 @@ button.action:hover {
     </table>
 </div>
 
- <div class="veiledning">
+<div class="veiledning">
     <h3>📘 Veiledning for bruk</h3>
     <ol>
-        <li><b>Velg Modus:</b> Velg enten "Filnavn generatør (PA0702)" for FDV dokumentasjon eller "Filnavn generatør for tegning (PA0603)" for tegninger.</li>
-        
-        <li><b>Fyll ut data:</b> Skriv inn informasjon basert på valgt modus:
-            <ul style="margin-top: 5px;">
-                <li><i>Filnavn generatør (PA0702):</i> Skriv inn systemkode, komponentkoder, informasjonstype og dokumenttype basert på Statsbyggs PA-anvisninger.</li>
-                <li><i>Filnavn generatør for tegning (PA0603):</i> Skriv inn eiendomnummer, byggnummer, etasje, fag, systemkode, tegningstype og løpenummer.</li>
+        <li><b>Velg riktig modus:</b> 
+            Velg enten 
+            <i>"Filnavn generatør (PA0702)"</i> for dokumenter 
+            eller 
+            <i>"Filnavn generatør for tegning (PA0603)"</i> for tegninger.
+        </li>
+
+        <li><b>Fyll inn feltene:</b> 
+            Skriv inn informasjonen som gjelder for valgt modus.
+        </li>
+
+        <li><b>Generer filnavn:</b> 
+            Klikk på "Generer filnavn" for å lage navnet.
+        </li>
+
+        <li><b>Legg til filer:</b> 
+            Du kan:
+            <ul style="margin-top:5px;">
+                <li>Dra og slippe filer</li>
+                <li>Eller klikke for å velge flere filer</li>
             </ul>
         </li>
 
-        <li><b>Generer filnavn:</b> Klikk på "Generer filnavn" for å se resultatet i den oransje boksen.</li>
-        
-        <li><b>Dra og slipp (Anbefalt):</b> Hvis du har filen klar, dra den direkte til det blå området. Filen vil automatisk lastes ned med det korrekte navnet.</li>
-        
-        <li><b>Neste filnavn løpenummer:</b> Bruk "Neste filnavn løpenummer"-knappen for å raskt øke løpenummeret når du navngir flere filer i serie.</li>
+       <li><b>Nedlast modus:</b> 
+    Velg hvordan filene skal lastes ned.
+    <ul style="margin-top:5px;">
+        <li><i>Rask nedlasting:</i> Filene lastes ned automatisk direkte til nettleseren.</li>
+        <li><i>Velg hvor filen skal lagres:</i> Du velger selv hvor filene skal lagres på PC-en.</li>
+    </ul>
+</li>
+
+        <li><b>Neste løpenummer:</b> 
+            Bruk knappen for å øke nummeret raskt.
+        </li>
     </ol>
 </div>
 </div>
@@ -1127,6 +1263,26 @@ button.action:hover {
 ]
     };
 
+
+    function toggleDownloadPopup() {
+        const popup = document.getElementById('download-popup');
+        const backdrop = document.getElementById('download-popup-backdrop');
+        const isOpen = popup.classList.contains('open');
+
+        popup.classList.toggle('open', !isOpen);
+        backdrop.classList.toggle('open', !isOpen);
+        popup.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+    }
+
+    function closeDownloadPopup() {
+        const popup = document.getElementById('download-popup');
+        const backdrop = document.getElementById('download-popup-backdrop');
+        if (!popup || !backdrop) return;
+        popup.classList.remove('open');
+        backdrop.classList.remove('open');
+        popup.setAttribute('aria-hidden', 'true');
+    }
+
     function showTab(tab) {
         activeTab = tab;
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -1194,6 +1350,17 @@ button.action:hover {
         container.innerHTML = history[activeTab].map(h => `<div class="recent-item">${h}</div>`).join('');
     }
 
+
+    function toggleDownloadSettings() {
+        const box = document.getElementById('download-settings');
+        const btn = document.getElementById('download-mode-btn');
+        if (!box || !btn) return;
+
+        const isOpen = box.style.display === 'grid';
+        box.style.display = isOpen ? 'none' : 'grid';
+        btn.textContent = isOpen ? 'Nedlast modus' : 'Skjul nedlast modus';
+    }
+
     function copy() {
         const text = document.getElementById('result-text').innerText;
         navigator.clipboard.writeText(text);
@@ -1201,99 +1368,179 @@ button.action:hover {
     }
 
     function nextNum() {
-       const id = (activeTab === 'std') ? 'std-sys-run' : 'teg-run';
-let input = document.getElementById(id);
-
-// 1. زيادة الرقم بمقدار 1
-let nextValue = parseInt(input.value || 0) + 1;
-
-// 2. تحويل الرقم إلى نص مكون من 3 خانات (هذا هو التعديل الأهم)
-input.value = nextValue.toString().padStart(3, '0');
-
-// 3. تحديث الاسم المولد
-generate();
+        const id = (activeTab === 'std') ? 'std-sys-run' : 'teg-run';
+        const input = document.getElementById(id);
+        const nextValue = parseInt(input.value || 0) + 1;
+        input.value = nextValue.toString().padStart(3, '0');
+        generate();
     }
 
-   function downloadResult() {
-    const name = generate();
-    // هنا قمنا بتغيير النوع إلى text/plain
-    const blob = new Blob([name], { type: "text/plain" }); 
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    // إضافة .txt تمنع المتصفح من محاولة فتحه كـ PDF معطل
-    a.download = name + ".txt"; 
-    a.click();
-    URL.revokeObjectURL(url);
-}
-const myDropZone = document.getElementById('drop-zone');
-const myHistoryBody = document.getElementById('history-body');
+    function downloadResult() {
+        const name = generate();
+        const blob = new Blob([name], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name + ".txt";
+        a.click();
+        URL.revokeObjectURL(url);
+    }
 
-if (myDropZone) {
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        myDropZone.addEventListener(eventName, (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-        }, false);
-    });
-
-    myDropZone.addEventListener('dragover', () => {
-        myDropZone.classList.add('dragover');
-    });
-
-    myDropZone.addEventListener('dragleave', () => {
-        myDropZone.classList.remove('dragover');
-    });
-
-    myDropZone.addEventListener('drop', (e) => {
-        myDropZone.classList.remove('dragover');
-
-        const files = e.dataTransfer.files;
+    function getGeneratedName() {
         const generatedName = document.getElementById('result-text').innerText.trim();
-
-        if (!generatedName || generatedName.includes('---')) {
+        if (!generatedName || generatedName === 'Klar til å generere...' || generatedName.includes('---')) {
             alert("Vennligst fyll ut feltene og generer et navn først!");
+            return null;
+        }
+        return generatedName;
+    }
+
+    function splitNameAndExtension(filename) {
+        const dotIndex = filename.lastIndexOf('.');
+        if (dotIndex === -1) return { base: filename, ext: '' };
+        return {
+            base: filename.substring(0, dotIndex),
+            ext: filename.substring(dotIndex)
+        };
+    }
+
+    function addHistoryRow(oldName, newName) {
+        if (!myHistoryBody) return;
+        const now = new Date();
+        const dato = now.toLocaleDateString();
+        const tid = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+
+        const rad = document.createElement('tr');
+        rad.innerHTML = `
+            <td>${dato}</td>
+            <td>${tid}</td>
+            <td class="old-name">${oldName}</td>
+            <td class="new-name">${newName}</td>
+        `;
+        myHistoryBody.insertBefore(rad, myHistoryBody.firstChild);
+    }
+
+    function buildFinalName(file, index, totalFiles, generatedName) {
+        const multiMode = document.getElementById('multi-mode')?.value || 'number';
+        const generatedParts = splitNameAndExtension(generatedName);
+        const originalParts = splitNameAndExtension(file.name);
+
+        if (totalFiles > 1 && multiMode === 'number') {
+            const serial = String(index + 1).padStart(3, '0');
+            return `${generatedParts.base}-${serial}${originalParts.ext || generatedParts.ext}`;
+        }
+
+        if (!generatedName.toLowerCase().endsWith(originalParts.ext.toLowerCase())) {
+            return generatedParts.base + originalParts.ext;
+        }
+
+        return generatedName;
+    }
+
+    function triggerFastDownload(file, finalName) {
+        const url = URL.createObjectURL(file);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = finalName;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    async function saveWithPicker(file, finalName) {
+        if (!window.showSaveFilePicker) {
+            triggerFastDownload(file, finalName);
             return;
         }
 
-        if (files.length > 0) {
-            Array.from(files).forEach(file => {
-                const dotIndex = file.name.lastIndexOf('.');
-                const originalExt = dotIndex !== -1 ? file.name.substring(dotIndex) : '';
+        const fileExtension = finalName.includes('.') ? finalName.split('.').pop() : '';
+        const handle = await window.showSaveFilePicker({
+            suggestedName: finalName,
+            types: fileExtension ? [{
+                description: `${fileExtension.toUpperCase()} file`,
+                accept: { 'application/octet-stream': [`.${fileExtension}`] }
+            }] : undefined
+        });
 
-                let finalName = generatedName;
+        const writable = await handle.createWritable();
+        await writable.write(file);
+        await writable.close();
+    }
 
-                if (!generatedName.toLowerCase().endsWith(originalExt.toLowerCase())) {
-                    finalName += originalExt;
+    async function processSelectedFiles(fileList) {
+        const generatedName = getGeneratedName();
+        if (!generatedName) return;
+
+        const files = Array.from(fileList || []);
+        if (!files.length) return;
+
+        const downloadMode = document.getElementById('download-mode')?.value || 'fast';
+
+        for (let index = 0; index < files.length; index++) {
+            const file = files[index];
+            const finalName = buildFinalName(file, index, files.length, generatedName);
+            addHistoryRow(file.name, finalName);
+
+            try {
+                if (downloadMode === 'choose') {
+                    await saveWithPicker(file, finalName);
+                } else {
+                    triggerFastDownload(file, finalName);
                 }
-
-                const now = new Date();
-                const dato = now.toLocaleDateString();
-                const tid = now.getHours().toString().padStart(2, '0') + ":" +
-                            now.getMinutes().toString().padStart(2, '0');
-
-                if (myHistoryBody) {
-                    const rad = document.createElement('tr');
-                    rad.innerHTML = `
-                        <td>${dato}</td>
-                        <td>${tid}</td>
-                        <td class="old-name" style="color: #666; font-style: italic;">${file.name}</td>
-                        <td class="new-name" style="font-weight: bold; color: var(--statsbygg-orange);">${finalName}</td>
-                    `;
-                    myHistoryBody.insertBefore(rad, myHistoryBody.firstChild);
+            } catch (error) {
+                if (error && error.name === 'AbortError') {
+                    break;
                 }
+                console.error(error);
+                triggerFastDownload(file, finalName);
+            }
+        }
+    }
 
-                const url = URL.createObjectURL(file);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = finalName;
-                a.click();
-                URL.revokeObjectURL(url);
-            });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeDownloadPopup();
         }
     });
 
-}
+    const myDropZone = document.getElementById('drop-zone');
+    const myHistoryBody = document.getElementById('history-body');
+    const myFileInput = document.getElementById('file-input');
+
+    if (myDropZone) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            myDropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            }, false);
+        });
+
+        myDropZone.addEventListener('click', () => {
+            if (myFileInput) myFileInput.click();
+        });
+
+        myDropZone.addEventListener('dragover', () => {
+            myDropZone.classList.add('dragover');
+        });
+
+        myDropZone.addEventListener('dragleave', () => {
+            myDropZone.classList.remove('dragover');
+        });
+
+        myDropZone.addEventListener('drop', async (e) => {
+            myDropZone.classList.remove('dragover');
+            await processSelectedFiles(e.dataTransfer.files);
+        });
+    }
+
+    if (myFileInput) {
+        myFileInput.addEventListener('change', async (e) => {
+            await processSelectedFiles(e.target.files);
+            e.target.value = '';
+        });
+    }
    
 
 
