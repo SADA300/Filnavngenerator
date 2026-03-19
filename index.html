@@ -1226,12 +1226,10 @@ generate();
     a.click();
     URL.revokeObjectURL(url);
 }
-
 const myDropZone = document.getElementById('drop-zone');
 const myHistoryBody = document.getElementById('history-body');
 
 if (myDropZone) {
-    // 1. Forhindre standard nettleser-oppførsel (viktig for at drop skal virke)
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         myDropZone.addEventListener(eventName, (e) => {
             e.preventDefault();
@@ -1239,7 +1237,6 @@ if (myDropZone) {
         }, false);
     });
 
-    // 2. Visuelle effekter når man drar filen over boksen
     myDropZone.addEventListener('dragover', () => {
         myDropZone.classList.add('dragover');
     });
@@ -1248,51 +1245,54 @@ if (myDropZone) {
         myDropZone.classList.remove('dragover');
     });
 
-    // 3. Selve handlingen når filen slippes
     myDropZone.addEventListener('drop', (e) => {
         myDropZone.classList.remove('dragover');
-        
-        const files = e.dataTransfer.files;
-        // Henter navnet fra den oransje resultat-boksen din
-        const generatedName = document.getElementById('result-text').innerText;
 
-        // Sjekk om et navn faktisk er generert
-        if (!generatedName || generatedName.includes("---") || generatedName === "") {
+        const files = e.dataTransfer.files;
+        const generatedName = document.getElementById('result-text').innerText.trim();
+
+        if (!generatedName || generatedName.includes('---')) {
             alert("Vennligst fyll ut feltene og generer et navn først!");
             return;
         }
 
         if (files.length > 0) {
             Array.from(files).forEach(file => {
-                // A. Finn tidspunkt for logging
-                const nå = new Date();
-                const dato = nå.toLocaleDateString();
-                const tid = nå.getHours().toString().padStart(2, '0') + ":" + 
-                            nå.getMinutes().toString().padStart(2, '0');
-                
-                // B. Oppdater historikk-tabellen (hvis den finnes)
+                const dotIndex = file.name.lastIndexOf('.');
+                const originalExt = dotIndex !== -1 ? file.name.substring(dotIndex) : '';
+
+                let finalName = generatedName;
+
+                if (!generatedName.toLowerCase().endsWith(originalExt.toLowerCase())) {
+                    finalName += originalExt;
+                }
+
+                const now = new Date();
+                const dato = now.toLocaleDateString();
+                const tid = now.getHours().toString().padStart(2, '0') + ":" +
+                            now.getMinutes().toString().padStart(2, '0');
+
                 if (myHistoryBody) {
                     const rad = document.createElement('tr');
                     rad.innerHTML = `
-                       <td>${dato}</td>
+                        <td>${dato}</td>
                         <td>${tid}</td>
                         <td class="old-name" style="color: #666; font-style: italic;">${file.name}</td>
-                        <td class="new-name" style="font-weight: bold; color: var(--statsbygg-orange);">${generatedName}</td>
+                        <td class="new-name" style="font-weight: bold; color: var(--statsbygg-orange);">${finalName}</td>
                     `;
-                    // Legger den nyeste øverst
                     myHistoryBody.insertBefore(rad, myHistoryBody.firstChild);
                 }
 
-                // C. Start nedlasting av filen med det nye navnet
                 const url = URL.createObjectURL(file);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = generatedName; 
+                a.download = finalName;
                 a.click();
                 URL.revokeObjectURL(url);
             });
         }
     });
+
 }
    
 
