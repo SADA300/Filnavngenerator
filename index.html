@@ -831,50 +831,49 @@ button.action:hover {
         <div class="form-grid">
             <div class="form-group"><label>1. Eiendomsnummer</label><input id="teg-eiendom" type="text" placeholder="legg-inn Eiendomnsnummer"></div>
             <div class="form-group"><label>2. Byggnummer</label><input id="teg-bygg" type="text" placeholder="legg-inn Byggnummer"></div>
-           <div class="form-group">
+           <div  class="form-group">
     <label>3. Etasje</label>
-    <input id="teg-etasje" type="text" placeholder="legg-inn Etasjenummer">
+    <input id="teg-etasje" list="etasje-list" placeholder="Velg eller skriv etasje">
+
+    <datalist id="etasje-list">
+
+    <!-- Underetasje -->
+    <option value="02U">2. Underetasje</option>
+    <option value="01U">1. Underetasje</option>
+    <option value="00U">Underetasje</option>
+
+    <!-- Over bakken -->
+    <option value="01">1. etasje</option>
+    <option value="02">2. etasje</option>
+    <option value="03">3. etasje</option>
+    <option value="04">4. etasje</option>
+    <option value="05">5. etasje</option>
+    <option value="06">6. etasje</option>
+    <option value="07">7. etasje</option>
+    <option value="08">8. etasje</option>
+    <option value="09">9. etasje</option>
+    <option value="10">10. etasje</option>
+    <option value="11">11. etasje</option>
+    <option value="12">12. etasje</option>
+    <option value="13">13. etasje</option>
+    <option value="14">14. etasje</option>
+    <option value="15">15. etasje</option>
+    <option value="16">16. etasje</option>
+    <option value="17">17. etasje</option>
+    <option value="18">18. etasje</option>
+    <option value="19">19. etasje</option>
+    <option value="20">20. etasje</option>
+
+    <!-- Loft / Tak -->
+    <option value="04L">Loft</option>
+    <option value="05T">Tak</option>
+
+    <!-- Spesial -->
+    <option value="XX">Ikke knyttet til etasje</option>
+
+</datalist>
 </div>
-<div class="form-group">
-    <label>3. Etasje</label>
-    <select id="teg-etasje">
-        <option value="">Velg etasje...</option>
 
-        <!-- Underetasje -->
-        <option value="02U">02U - 2. Underetasje</option>
-        <option value="01U">01U - 1. Underetasje</option>
-        <option value="00U">00U - Underetasje</option>
-
-        <!-- Over bakken -->
-        <option value="01">01 - 1. etasje</option>
-        <option value="02">02 - 2. etasje</option>
-        <option value="03">03 - 3. etasje</option>
-        <option value="04">04 - 4. etasje</option>
-        <option value="05">05 - 5. etasje</option>
-        <option value="06">06 - 6. etasje</option>
-        <option value="07">07 - 7. etasje</option>
-        <option value="08">08 - 8. etasje</option>
-        <option value="09">09 - 9. etasje</option>
-        <option value="10">10 - 10. etasje</option>
-        <option value="11">11 - 11. etasje</option>
-        <option value="12">12 - 12. etasje</option>
-        <option value="13">13 - 13. etasje</option>
-        <option value="14">14 - 14. etasje</option>
-        <option value="15">15 - 15. etasje</option>
-        <option value="16">16 - 16. etasje</option>
-        <option value="17">17 - 17. etasje</option>
-        <option value="18">18 - 18. etasje</option>
-        <option value="19">19 - 19. etasje</option>
-        <option value="20">20 - 20. etasje</option>
-
-        <!-- Loft / Tak -->
-        <option value="04L">04L - Loft</option>
-        <option value="05T">05T - Tak</option>
-
-        <!-- Spesial -->
-        <option value="XX">XX - Ikke knyttet til etasje</option>
-    </select>
-</div>
 
 
 
