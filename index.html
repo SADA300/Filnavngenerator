@@ -200,6 +200,14 @@ button.action:hover {
 }
 
 
+    
+
+#std-doc-help {
+    font-size: 12px;
+    color: #475569;
+}
+
+
     </style>
 </head>
 <body>
@@ -423,10 +431,10 @@ button.action:hover {
 <option value="520">Telenett og ekstern kommunikasjon</option>
 <option value="530">Informasjonssystemer (Skilt/Tavler)</option>
 <option value="540">Integrerte sikkerhetsanlegg</option>
-<option value="541">Brannalarm</option>
+<option value="542">Brannalarm</option>
 <option value="542">Nød- og varslingsanlegg</option>
 <option value="543">Adgangskontroll og innbruddsalarm</option>
-<option value="544">TV-overvåking (CCTV)</option>
+<option value="544">Pasientsignal</option>
 <option value="545">Pasientvarsling</option>
 <option value="550">Multimedia (AV-utstyr)</option>
 <option value="560">Automatisering (SD-anlegg)</option>
@@ -447,7 +455,17 @@ button.action:hover {
 <option value="750">Utendørs elkraft</option>
 <option value="760">Utendørs tele og automatisering</option>
 <option value="770">Utendørs avfallshåndtering</option>
-<option value="780">Utendørs sikring og gjerder</option>
+<option value="779">Andre deler for park og grøntanlegg</option>
+<option value="783">Utendørs tilknytning til eksterne nett for vannforsyning, avløp og fjernvarme</option>
+<option value="784">Utendørs tilknytning til eksternt elkraftnet</option>
+<option value="785">Utendørs tilknytning til eksternttelenett </option>
+<option value="789"> Andre deler for utendørs infrastruktur</option>
+<option value="790">Andre utendørs anlegg</option>
+
+
+
+
+
     </datalist>
 </div>
 
@@ -460,7 +478,12 @@ button.action:hover {
             <div class="comp-box">
                 <div class="form-group">
                     <label>3. Komponentkode</label>
-                    <select id="std-komp">
+                  <input   id="std-komp"
+                           list="std-komp-list"
+                           type="text"
+                           placeholder="Velg eller skriv komponentkode"
+                            >
+                           <datalist id="std-komp-list">
                         <option value="">-- Ingen komponent --</option>
                         <option value="A">A - Bærende / Romdannende</option>
                         <option value="AB">AB - Bjelke</option>
@@ -792,7 +815,7 @@ button.action:hover {
                         <option value="YB">YB - Virtuelle grupperende systembærere</option>
                         <option value="YC">YC - Koblingspunkt</option>
                         <option value="Z">Z - Spesielle prosessutstyr for virksomheten.</option>
-                    </select>
+                 </datalist>
                 </div>
                 
                 
@@ -821,7 +844,19 @@ button.action:hover {
                     <option value="Vedlikehold">Vedlikehold</option>
                 </select>
             </div>
-            <div class="form-group full-width"><label>6. Dokumenttype</label><select id="std-doc"><option value="">Velg informasjonstype først...</option></select></div>
+            <div class="form-group full-width">
+                <label>6. Dokumenttype</label>
+                <input
+                    id="std-doc"
+                    list="std-doc-list"
+                    type="text"
+                    placeholder="Skriv eller velg dokumenttype"
+                    onchange="syncInfoTypeFromDocInput()"
+                    oninput="syncInfoTypeFromDocInput()"
+                >
+                <datalist id="std-doc-list"></datalist>
+                <small id="std-doc-help" style="display:block; margin-top:6px; color:#666;"></small>
+            </div>
             <div class="form-group full-width"><label>7. Fritekst (Valgfritt)</label><input id="std-text" type="text"></div>
         </div>
         <div class="recent-list"><div class="recent-title">Siste filnavn (Standard):</div><div id="std-history">Ingen historikk.</div></div>
@@ -1283,6 +1318,32 @@ button.action:hover {
         popup.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
     }
 
+    const docPairs = Object.entries(docData).flatMap(([info, docs]) =>
+        docs.map(doc => ({
+            info: info.replace(/\u00A0/g, ' ').trim(),
+            doc: doc.replace(/\u00A0/g, ' ').trim()
+        }))
+    );
+
+    let docLookup = new Map();
+
+    function normalizeText(value) {
+        return (value || '')
+            .replace(/\u00A0/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    function rebuildDocLookup() {
+        docLookup.clear();
+        docPairs.forEach(item => {
+            const key = normalizeText(item.doc).toLowerCase();
+            if (!docLookup.has(key)) {
+                docLookup.set(key, item.info);
+            }
+        });
+    }
+
     function closeDownloadPopup() {
         const popup = document.getElementById('download-popup');
         const backdrop = document.getElementById('download-popup-backdrop');
@@ -1301,13 +1362,51 @@ button.action:hover {
     }
 
     function populateStdDocs() {
-        const type = document.getElementById('std-info').value;
-        const docSel = document.getElementById('std-doc');
-        docSel.innerHTML = '<option value="">Velg...</option>';
-        if(docData[type]) {
-            docData[type].forEach(d => {
-                let o = document.createElement("option"); o.value = d; o.text = d; docSel.appendChild(o);
+        const selectedInfo = normalizeText(document.getElementById('std-info').value);
+        const docList = document.getElementById('std-doc-list');
+        const currentDocValue = document.getElementById('std-doc').value;
+
+        docList.innerHTML = '';
+
+        let list = docPairs;
+        if (selectedInfo) {
+            list = docPairs.filter(item => normalizeText(item.info) === selectedInfo);
+        }
+
+        const seen = new Set();
+
+        list
+            .filter(item => {
+                const key = `${normalizeText(item.doc)}__${normalizeText(item.info)}`;
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            })
+            .sort((a, b) => normalizeText(a.doc).localeCompare(normalizeText(b.doc), 'no'))
+            .forEach(item => {
+                const option = document.createElement('option');
+                option.value = normalizeText(item.doc);
+                option.label = `${normalizeText(item.doc)} | ${normalizeText(item.info)}`;
+                docList.appendChild(option);
             });
+
+        document.getElementById('std-doc').value = currentDocValue;
+        syncInfoTypeFromDocInput();
+    }
+
+    function syncInfoTypeFromDocInput() {
+        const docInput = document.getElementById('std-doc');
+        const infoSelect = document.getElementById('std-info');
+        const helpText = document.getElementById('std-doc-help');
+
+        const key = normalizeText(docInput.value).toLowerCase();
+        const matchedInfo = docLookup.get(key);
+
+        if (matchedInfo) {
+            infoSelect.value = matchedInfo;
+            helpText.textContent = `Tilknyttet Informasjonstype: ${matchedInfo}`;
+        } else {
+            helpText.textContent = '';
         }
     }
 
@@ -1553,6 +1652,10 @@ button.action:hover {
    
 
 
+    document.addEventListener('DOMContentLoaded', () => {
+        rebuildDocLookup();
+        populateStdDocs();
+    });
 
 </script>
 
