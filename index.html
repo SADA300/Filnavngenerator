@@ -1547,22 +1547,28 @@ button.action:hover {
         myHistoryBody.insertBefore(rad, myHistoryBody.firstChild);
     }
 
-    function buildFinalName(file, index, totalFiles, generatedName) {
-        const multiMode = document.getElementById('multi-mode')?.value || 'number';
-        const generatedParts = splitNameAndExtension(generatedName);
-        const originalParts = splitNameAndExtension(file.name);
+   function stripAllExtensions(filename) {
+    return filename.replace(/(\.[^.]+)+$/, '');
+}
 
-        if (totalFiles > 1 && multiMode === 'number') {
-            const serial = String(index + 1).padStart(3, '0');
-            return `${generatedParts.base}-${serial}${originalParts.ext || generatedParts.ext}`;
-        }
+function getSingleExtension(filename) {
+    const match = filename.match(/\.([^.]+)$/);
+    return match ? '.' + match[1] : '';
+}
 
-        if (!generatedName.toLowerCase().endsWith(originalParts.ext.toLowerCase())) {
-            return generatedParts.base + originalParts.ext;
-        }
+function buildFinalName(file, index, totalFiles, generatedName) {
+    const multiMode = document.getElementById('multi-mode')?.value || 'number';
 
-        return generatedName;
+    const cleanGeneratedBase = stripAllExtensions(generatedName);
+    const originalExt = getSingleExtension(file.name);
+
+    if (totalFiles > 1 && multiMode === 'number') {
+        const serial = String(index + 1).padStart(3, '0');
+        return `${cleanGeneratedBase}-${serial}${originalExt}`;
     }
+
+    return `${cleanGeneratedBase}${originalExt}`;
+}
 
     function triggerFastDownload(file, finalName) {
         const url = URL.createObjectURL(file);
