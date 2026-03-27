@@ -84,6 +84,30 @@ button.action:hover {
     opacity: 0.9;
 }
 
+.quick-mode-wrap {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.quick-mode-btn {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    background: white;
+    color: var(--statsbygg-blue);
+    font-weight: 600;
+    cursor: pointer;
+}
+.quick-mode-btn:hover {
+    background: #f8fafc;
+}
+.quick-mode-note {
+    font-size: 12px;
+    color: #64748b;
+}
+
 
         .download-popup {
             display: none;
@@ -217,13 +241,13 @@ button.action:hover {
     <div class="header">
 <div class="logo">
             <svg class="logo-svg" viewBox="0 0 350 100" xmlns="http://www.w3.org/2000/svg">
-                <path d="M45,25 L50,15 L55,25 L65,25 L60,35 L40,35 L35,25 Z" fill="#000"/>
-                <circle cx="50" cy="12" r="3" fill="#000"/>
-                <rect x="30" y="42" width="40" height="5" fill="#000"/>
-                <rect x="30" y="50" width="40" height="3" fill="#000"/>
-                <rect x="30" y="56" width="40" height="2" fill="#000"/>
-                <rect x="30" y="61" width="40" height="1" fill="#000"/>
-                <text x="85" y="58" font-family="Arial, sans-serif" font-weight="900" font-size="38" fill="#000">STATSBYGG</text>
+                <!--<path d="M45,25 L50,15 L55,25 L65,25 L60,35 L40,35 L35,25 Z" fill="#000"/>
+                //<circle cx="50" cy="12" r="3" fill="#000"/>
+                //<rect x="30" y="42" width="40" height="5" fill="#000"/>
+               // <rect x="30" y="50" width="40" height="3" fill="#000"/>
+               //<rect x="30" y="56" width="40" height="2" fill="#000"/>
+                <rect x="30" y="61" width="40" height="1" fill="#000"/>-->
+                <text x="85" y="58" font-family="Arial, sans-serif" font-weight="900" font-size="38" fill="#000">Test versjon</text>
             </svg>
         </div>
 
@@ -299,8 +323,8 @@ button.action:hover {
 <option value="119">Kulturminnedokumentasjon</option>
 <option value="121">Matrikkelinformasjon</option>
 <option value="122">Seksjoneringsplan</option>
-<option value="123">Offentlige rettslige betingelser</option>
-<option value="124">Ferdigattest og brukstillatelse</option>
+<option value="123">Offentlige rettslige betingelser  Offentlige rettslige betingelser for drift av eiendommen</option>
+<option value="124">Ferdigattest og midlertidig  brukstillatelse</option>
 <option value="131">Tomtebefaring</option>
 <option value="132">Beskyttelse av vegetasjon og vekstjord</option>
 <option value="133">Målinger og rapporter fra tomt</option>
@@ -318,8 +342,8 @@ button.action:hover {
 <option value="154">Energiattest</option>
 <option value="155">Miljøkartlegging og sanering</option>
 <option value="156">Skadedyr</option>
-<option value="161">Offentlige planer og regulering</option>
-<option value="162">Situasjonsplan</option>
+<option value="161">Offentlige planer og reguleringsdokumenter</option>
+<option value="162">Situasjonsplan for byggesaken</option>
 <option value="163">Som bygget tegninger</option>
 <option value="164">Tegninger til byggesak</option>
 <option value="165">Modeller</option>
@@ -329,7 +353,7 @@ button.action:hover {
 <option value="181">Sikkerhet mot naturpåkjenning</option>
 <option value="182">Graderingsspesifikasjon</option>
 <option value="183">Andre sikkerhetsvurderinger</option>
-<option value="191">Drifts- og vedlikeholdsplan bygg</option>
+<option value="191">Drifts- og vedlikeholdsplan bygning</option>
 <option value="192">Opplæringsplaner</option>
 <option value="193">Renholdsplan</option>
 <option value="194">Renovasjonsplan</option>
@@ -358,7 +382,6 @@ button.action:hover {
 <option value="235">Utvendig kledning og overflate</option>
 <option value="236">Innvendig overflate (yttervegg)</option>
 <option value="237">Solavskjerming</option>
-
 <option value="241">Bærende innervegger</option>
 <option value="242">Ikke-bærende innervegger</option>
 <option value="243">Systemvegger og glassfelt</option>
@@ -376,9 +399,9 @@ button.action:hover {
 
 <option value="261">Primærkonstruksjon yttertak</option>
 <option value="262">Taktekking</option>
-<option value="263">Glasstak og overlys</option>
+<option value="263">Glasstak, overlys, takluker, røykluker</option>
 <option value="264">Takoppbygg</option>
-<option value="265">Gesimser og takrenner</option>
+<option value="265">Gesimser, takrenner og nedløp</option>
 <option value="266">Himling og overflate (tak)</option>
 <option value="267">Prefabrikkerte takelementer</option>
 
@@ -1000,7 +1023,13 @@ button.action:hover {
         <select id="multi-mode">
             <option value="number">Legg til løpenummer automatisk</option>
             <option value="same">Bruk samme navn og behold filtype</option>
+            <option value="prepend">Legg til generert navn først</option>
+            <option value="append">Legg til generert navn sist</option>
         </select>
+        <div class="quick-mode-wrap">
+            <button type="button" id="quick-mode-btn" class="quick-mode-btn">Modus: Legg til løpenummer automatisk</button>
+            <span class="quick-mode-note">Trykk for å bytte raskt mellom modusene</span>
+        </div>
     </div>
 </div>
 
@@ -1059,21 +1088,29 @@ button.action:hover {
         <li><i>Velg hvor filen skal lagres:</i> Du velger selv hvor filene skal lagres på PC-en.</li>
     </ul>
 </li>
-<li>
-    <details>
-        <summary><b>Flere filer</b></summary>
-        Velg hvordan flere filer skal navngis:
-        <br><br>
-        Legg til løpenummer automatisk: hver fil får eget nummer (001, 002, 003)
-        <br>
-        Bruk samme navn: alle filer får samme navn med original filtype
-    </details>
-</li>
+
+        <li>
+            <b> Velg navnemodus</b><br>
+
+            Bruk <b>Modus-knappen</b> for å bytte raskt:
+            <ul>
+                <li><i>Bruk samme navn</i> → erstatter hele filnavnet</li>
+                <li><i>Legg til først</i> → nytt navn foran originalt navn</li>
+                <li><i>Legg til sist</i> → nytt navn etter originalt navn</li>
+                <li><i>Legg til løpenummer</i> → 001, 002, 003</li>
+            </ul>
+        </li>
 
         <li><b>Neste løpenummer:</b> 
             Bruk knappen for å øke nummeret raskt.
         </li>
     </ol>
+    <div style="margin-top:10px; font-size:13px; color:#555;">
+        <b>Tips:</b><br>
+        • Bruk <i>Bruk samme navn</i> når originalnavn ikke er viktig<br>
+        • Bruk <i>Legg til først/sist</i> når du vil beholde originalnavnet<br>
+        • Bruk <i>Legg til løpenummer</i> for mange like filer
+    </div>
 </div>
 </div>
 
@@ -1493,6 +1530,37 @@ button.action:hover {
         btn.textContent = isOpen ? 'Nedlast modus' : 'Skjul nedlast modus';
     }
 
+function initializeQuickModeToggle() {
+        const select = document.getElementById('multi-mode');
+        const quickBtn = document.getElementById('quick-mode-btn');
+
+        if (!select || !quickBtn) return;
+
+        const labels = {
+            number: 'Legg til løpenummer automatisk',
+            same: 'Bruk samme navn og behold filtype',
+            prepend: 'Legg til generert navn først',
+            append: 'Legg til generert navn sist'
+        };
+
+        const modes = ['number', 'same', 'prepend', 'append'];
+
+        function updateQuickModeLabel() {
+            const label = labels[select.value] || labels.number;
+            quickBtn.textContent = `Modus: ${label}`;
+        }
+
+        quickBtn.addEventListener('click', () => {
+            const currentIndex = modes.indexOf(select.value);
+            const nextIndex = currentIndex >= 0 ? (currentIndex + 1) % modes.length : 0;
+            select.value = modes[nextIndex];
+            updateQuickModeLabel();
+        });
+
+        select.addEventListener('change', updateQuickModeLabel);
+        updateQuickModeLabel();
+    }
+
     function copy() {
         const text = document.getElementById('result-text').innerText;
         navigator.clipboard.writeText(text);
@@ -1565,7 +1633,16 @@ function buildFinalName(file, index, totalFiles, generatedName) {
     const multiMode = document.getElementById('multi-mode')?.value || 'number';
 
     const cleanGeneratedBase = stripAllExtensions(generatedName);
+    const originalBase = stripAllExtensions(file.name);
     const originalExt = getSingleExtension(file.name);
+
+    if (multiMode === 'prepend') {
+        return `${cleanGeneratedBase}-${originalBase}${originalExt}`;
+    }
+
+    if (multiMode === 'append') {
+        return `${originalBase}-${cleanGeneratedBase}${originalExt}`;
+    }
 
     if (totalFiles > 1 && multiMode === 'number') {
         const serial = String(index + 1).padStart(3, '0');
@@ -1685,6 +1762,7 @@ function buildFinalName(file, index, totalFiles, generatedName) {
     document.addEventListener('DOMContentLoaded', () => {
         rebuildDocLookup();
         populateStdDocs();
+        initializeQuickModeToggle();
     });
 
 </script>
