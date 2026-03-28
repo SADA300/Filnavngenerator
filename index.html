@@ -50,62 +50,199 @@
     margin-top: 20px; 
 }
 button.action { 
-    padding: 12px; 
-    border: none; 
-    border-radius: 6px; 
-    font-weight: 600; 
+    padding: 13px 14px; 
+    border: 1px solid transparent; 
+    border-radius: 10px; 
+    font-weight: 700; 
     cursor: pointer; 
-    transition: 0.2s; 
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease; 
+    min-height: 48px;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
 }
-/* Generer filnavn - RØD */
-.btn-gen { 
-    background: #d32f2f; /* En tydelig rød farge */
-    color: white; 
-}
-/* Kopier navn - HVIT */
-.btn-copy { 
-    background: rgb(248, 243, 243); 
-    color: #333; /* Mørk tekst så den kan leses */
-    border: 1px solid #ccc; /* En tynn ramme så knappen synes */
-}
-/* Neste filnavn - HVIT */
-.btn-next { 
-    background: rgb(248, 243, 243); 
-    color: #333; 
-    border: 1px solid #ccc; 
-}
-/* Last-ned - GRØNN */
-.btn-down { 
-    background: #2e7d32; /* En fin grønnfarge */
-    color: white; 
-}
-/* Hover-effekter (valgfritt, men anbefalt) */
 button.action:hover {
-    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+}
+button.action:active {
+    transform: translateY(0);
+}
+button.action.active {
+    outline: 3px solid rgba(239, 108, 0, 0.22);
+    box-shadow: 0 0 0 2px rgba(239, 108, 0, 0.14), 0 10px 22px rgba(15, 23, 42, 0.14);
+}
+/* Generer filnavn */
+.btn-gen { 
+    background: #d32f2f;
+    color: white; 
+}
+/* Kopier navn */
+.btn-copy { 
+    background: #ffffff; 
+    color: #1f2937; 
+    border-color: #cbd5e1; 
+}
+/* Neste filnavn */
+.btn-next { 
+    background: #1d4ed8; 
+    color: white; 
+}
+/* Nedlast modus */
+.btn-down { 
+    background: #2e7d32; 
+    color: white; 
+}
+
+button.action {
+    position: relative;
+    min-height: 48px;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+button.action:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+}
+button.action.active {
+    outline: 3px solid rgba(239,108,0,0.22);
+    box-shadow: 0 0 0 3px rgba(239,108,0,0.10), 0 10px 20px rgba(15,23,42,0.14);
+}
+.btn-next {
+    background: #1565c0;
+    color: white;
+    border: 1px solid #0f4aa1;
+}
+.btn-copy {
+    background: #ffffff;
+    color: #1f2937;
+    border: 1px solid #cbd5e1;
+}
+.btn-down.active {
+    background: #14532d;
+}
+
+.mode-summary {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+}
+.mode-card {
+    background: #fff;
+    border: 1px solid #dbe3ec;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 13px;
+    line-height: 1.45;
+}
+.mode-card strong {
+    display: block;
+    color: var(--statsbygg-blue);
+    margin-bottom: 4px;
+}
+.mode-card.active {
+    border-color: #1d4ed8;
+    box-shadow: 0 0 0 2px rgba(29,78,216,0.12);
+    background: #f8fbff;
+}
+
+.download-state {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #f8fafc;
+    border: 1px solid #dbe3ec;
+    color: #334155;
+    font-size: 13px;
+}
+.download-state strong {
+    color: var(--statsbygg-blue);
+}
+
+.guide-hero {
+    margin-bottom: 16px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, #f8fbff, #eef5fb);
+    border: 1px solid #dbe3ec;
+    border-radius: 12px;
+}
+.guide-hero-title {
+    font-weight: 800;
+    color: var(--statsbygg-blue);
+    margin-bottom: 6px;
+}
+.guide-hero-text {
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.5;
+}
+.guide-example {
+    margin-top: 14px;
+    padding: 14px;
+    background:#ffffff;
+    border:1px solid #e2e8f0;
+    border-radius:10px;
+    font-size:13px;
+    color:#334155;
+}
+.guide-example code {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #0f172a;
+}
+
+#download-settings {
+    background: #f8fafc;
+    border: 1px solid #dbe3ec;
+    border-radius: 12px;
+    padding: 16px;
 }
 
 .quick-mode-wrap {
-    margin-top: 10px;
+    margin-top: 12px;
     display: flex;
     gap: 10px;
-    align-items: center;
+    align-items: flex-start;
     flex-wrap: wrap;
 }
 .quick-mode-btn {
-    padding: 10px 14px;
-    border-radius: 8px;
+    padding: 12px 16px;
+    border-radius: 10px;
     border: 1px solid #cbd5e1;
     background: white;
     color: var(--statsbygg-blue);
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
+    min-height: 48px;
+    text-align: left;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06);
 }
 .quick-mode-btn:hover {
     background: #f8fafc;
 }
+.quick-mode-btn.active {
+    background: var(--statsbygg-blue);
+    color: white;
+    border-color: var(--statsbygg-blue);
+}
 .quick-mode-note {
     font-size: 12px;
-    color: #64748b;
+    color: #475569;
+    line-height: 1.5;
+    max-width: 320px;
+}
+.quick-mode-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #e8f1ff;
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: 700;
 }
 
 
@@ -1012,14 +1149,14 @@ button.action:hover {
 
 <div id="download-settings" style="margin-top: 15px; display: none; grid-template-columns: 1fr 1fr; gap: 12px;">
     <div>
-        <label for="download-mode">Nedlastingsmodus</label>
+        <label for="download-mode">1. Nedlastingsmodus</label>
         <select id="download-mode">
             <option value="fast">Rask nedlasting</option>
             <option value="choose">Velg hvor filen skal lagres</option>
         </select>
     </div>
     <div>
-        <label for="multi-mode">Flere filer</label>
+        <label for="multi-mode">2. Navnemodus for flere filer</label>
         <select id="multi-mode">
             <option value="number">Legg til løpenummer automatisk</option>
             <option value="same">Bruk samme navn og behold filtype</option>
@@ -1027,18 +1164,28 @@ button.action:hover {
             <option value="append">Legg til generert navn sist</option>
         </select>
         <div class="quick-mode-wrap">
-            <button type="button" id="quick-mode-btn" class="quick-mode-btn">Modus: Legg til løpenummer automatisk</button>
-            <span class="quick-mode-note">Trykk for å bytte raskt mellom modusene</span>
+            <button type="button" id="quick-mode-btn" class="quick-mode-btn">Aktiv modus: Legg til løpenummer automatisk</button>
+            <div class="quick-mode-note">
+                <div id="quick-mode-badge" class="quick-mode-status">Legg til løpenummer automatisk</div>
+                <div id="quick-mode-help" style="margin-top: 8px;">Best for flere like filer som skal få 001, 002 og 003.</div>
+            </div>
+        </div>
+        <div class="mode-summary" id="mode-summary">
+            <div class="mode-card active" data-mode-card="number"><strong>Løpenummer</strong>Best når du har mange like filer og vil få 001, 002 og 003 automatisk.</div>
+            <div class="mode-card" data-mode-card="same"><strong>Samme navn</strong>Bruk dette når alle filer skal ha samme nye navn, men beholde filtypen.</div>
+            <div class="mode-card" data-mode-card="prepend"><strong>Legg til først</strong>Det genererte navnet legges foran originalt filnavn.</div>
+            <div class="mode-card" data-mode-card="append"><strong>Legg til sist</strong>Det genererte navnet legges etter originalt filnavn.</div>
         </div>
     </div>
 </div>
 
     <div class="button-grid">
-        <button class="action btn-gen" onclick="generate()"> Generer filnavn</button>
-        <button class="action btn-copy" onclick="copy()"> kopier navn</button>
-        <button class="action btn-next" onclick="nextNum()"> Neste filnavn løpenummer</button>
-        <button id="download-mode-btn" class="action btn-down" onclick="toggleDownloadSettings()"> Nedlast modus</button>
+        <button class="action btn-gen" onclick="generate()">Generer filnavn</button>
+        <button class="action btn-copy" onclick="copy()">Kopier navn</button>
+        <button class="action btn-next" onclick="nextNum()">Neste løpenummer</button>
+        <button id="download-mode-btn" class="action btn-down" onclick="toggleDownloadSettings()">Vis nedlast modus</button>
     </div>
+    <div id="download-state" class="download-state"><strong>Status:</strong> Nedlast modus er skjult. Åpne denne når du vil gi filer nye navn og laste dem ned.</div>
 
 <div class="history-section">
     <h3 style="margin-top:0; color: var(--statsbygg-blue);"> Navnehistorikk</h3>
@@ -1056,60 +1203,26 @@ button.action:hover {
 </div>
 
 <div class="veiledning">
-    <h3>📘 Veiledning for bruk</h3>
+    <div class="guide-hero">
+        <div class="guide-hero-title">Enklest måte å bruke verktøyet på</div>
+        <div class="guide-hero-text">Fyll inn feltene fra venstre mot høyre. Trykk så på <b>Generer filnavn</b>. Skal du jobbe med flere filer, åpner du <b>nedlast modus</b> og velger en navnemodus som passer.</div>
+    </div>
+
+    <h3>Veiledning</h3>
     <ol>
-        <li><b>Velg riktig modus:</b> 
-            Velg enten 
-            <i>"Filnavn generatør (PA0702)"</i> for dokumenter 
-            eller 
-            <i>"Filnavn generatør for tegning (PA0603)"</i> for tegninger.
-        </li>
-
-        <li><b>Fyll inn feltene:</b> 
-            Skriv inn informasjonen som gjelder for valgt modus.
-        </li>
-
-        <li><b>Generer filnavn:</b> 
-            Klikk på "Generer filnavn" for å lage navnet.
-        </li>
-
-        <li><b>Legg til filer:</b> 
-            Du kan:
-            <ul style="margin-top:5px;">
-                <li>Dra og slippe filer</li>
-                <li>Eller klikke for å velge flere filer</li>
-            </ul>
-        </li>
-
-       <li><b>Nedlast modus:</b> 
-    Velg hvordan filene skal lastes ned.
-    <ul style="margin-top:5px;">
-        <li><i>Rask nedlasting:</i> Filene lastes ned automatisk direkte til nettleseren.</li>
-        <li><i>Velg hvor filen skal lagres:</i> Du velger selv hvor filene skal lagres på PC-en.</li>
-    </ul>
-</li>
-
-        <li>
-            <b> Velg navnemodus</b><br>
-
-            Bruk <b>Modus-knappen</b> for å bytte raskt:
-            <ul>
-                <li><i>Bruk samme navn</i> → erstatter hele filnavnet</li>
-                <li><i>Legg til først</i> → nytt navn foran originalt navn</li>
-                <li><i>Legg til sist</i> → nytt navn etter originalt navn</li>
-                <li><i>Legg til løpenummer</i> → 001, 002, 003</li>
-            </ul>
-        </li>
-
-        <li><b>Neste løpenummer:</b> 
-            Bruk knappen for å øke nummeret raskt.
-        </li>
+        <li><b>Velg riktig fane.</b> Bruk PA0702 for dokumenter og PA0603 for tegninger.</li>
+        <li><b>Fyll inn de viktigste feltene først.</b> Start med systemnummer eller eiendomsnummer. Velg deretter informasjonstype og dokumenttype.</li>
+        <li><b>Trykk på Generer filnavn.</b> Resultatet vises i feltet under skjemaet. Bruk <b>Kopier navn</b> når du vil lime inn navnet et annet sted.</li>
+        <li><b>Bruk Neste løpenummer for serier.</b> Denne knappen øker nummeret med 1 og lager neste navn med en gang. Den passer når du lager flere filer etter hverandre.</li>
+        <li><b>Åpne nedlast modus når du jobber med filer.</b> Der kan du velge hvordan filer skal lagres og hvordan nytt navn skal kombineres med eksisterende filnavn.</li>
     </ol>
-    <div style="margin-top:10px; font-size:13px; color:#555;">
-        <b>Tips:</b><br>
-        • Bruk <i>Bruk samme navn</i> når originalnavn ikke er viktig<br>
-        • Bruk <i>Legg til først/sist</i> når du vil beholde originalnavnet<br>
-        • Bruk <i>Legg til løpenummer</i> for mange like filer
+
+    <div class="guide-example">
+        <b>Hva skal du velge?</b><br>
+        Har du mange like filer. Velg <b>Legg til løpenummer automatisk</b>.<br>
+        Vil du beholde originalnavnet. Velg <b>Legg til først</b> eller <b>Legg til sist</b>.<br>
+        Vil du gi alle filer samme nye navn. Velg <b>Bruk samme navn og behold filtype</b>.
+        <br><code>Eksempel: 001 → 002 → 003</code>
     </div>
 </div>
 </div>
@@ -1420,6 +1533,11 @@ button.action:hover {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(tab + '-content').classList.add('active');
         document.getElementById('tab-' + tab + '-btn').classList.add('active');
+
+        const nextBtn = document.querySelector('.btn-next');
+        if (nextBtn) {
+            nextBtn.classList.toggle('active', true);
+        }
     }
 
     function populateStdDocs() {
@@ -1523,16 +1641,26 @@ button.action:hover {
     function toggleDownloadSettings() {
         const box = document.getElementById('download-settings');
         const btn = document.getElementById('download-mode-btn');
+        const state = document.getElementById('download-state');
         if (!box || !btn) return;
 
         const isOpen = box.style.display === 'grid';
         box.style.display = isOpen ? 'none' : 'grid';
-        btn.textContent = isOpen ? 'Nedlast modus' : 'Skjul nedlast modus';
+        btn.textContent = isOpen ? 'Vis nedlast modus' : 'Skjul nedlast modus';
+        btn.classList.toggle('active', !isOpen);
+
+        if (state) {
+            state.innerHTML = isOpen
+                ? '<strong>Status:</strong> Nedlast modus er skjult. Åpne denne når du vil gi filer nye navn og laste dem ned.'
+                : '<strong>Status:</strong> Nedlast modus er åpen. Velg nedlasting og navnemodus før du drar inn filer.';
+        }
     }
 
 function initializeQuickModeToggle() {
         const select = document.getElementById('multi-mode');
         const quickBtn = document.getElementById('quick-mode-btn');
+        const quickBadge = document.getElementById('quick-mode-badge');
+        const quickHelp = document.getElementById('quick-mode-help');
 
         if (!select || !quickBtn) return;
 
@@ -1543,11 +1671,25 @@ function initializeQuickModeToggle() {
             append: 'Legg til generert navn sist'
         };
 
+        const helpTexts = {
+            number: 'Best for flere like filer som skal få 001, 002 og 003.',
+            same: 'Bruk denne når alle filer skal ha samme genererte navn, men beholde filtypen.',
+            prepend: 'Bruk denne når det nye navnet skal stå først og originalt navn skal beholdes etterpå.',
+            append: 'Bruk denne når originalt navn skal stå først og det genererte navnet skal legges til sist.'
+        };
+
         const modes = ['number', 'same', 'prepend', 'append'];
 
         function updateQuickModeLabel() {
-            const label = labels[select.value] || labels.number;
-            quickBtn.textContent = `Modus: ${label}`;
+            const value = select.value || 'number';
+            const label = labels[value] || labels.number;
+            quickBtn.textContent = `Aktiv modus: ${label}`;
+            quickBtn.classList.add('active');
+            if (quickBadge) quickBadge.textContent = label;
+            if (quickHelp) quickHelp.textContent = helpTexts[value] || helpTexts.number;
+            document.querySelectorAll('[data-mode-card]').forEach(card => {
+                card.classList.toggle('active', card.getAttribute('data-mode-card') === value);
+            });
         }
 
         quickBtn.addEventListener('click', () => {
@@ -1572,6 +1714,11 @@ function initializeQuickModeToggle() {
         const input = document.getElementById(id);
         const nextValue = parseInt(input.value || 0) + 1;
         input.value = nextValue.toString().padStart(3, '0');
+        const btn = document.querySelector('.btn-next');
+        if (btn) {
+            btn.classList.add('active');
+            setTimeout(() => btn.classList.add('active'), 50);
+        }
         generate();
     }
 
