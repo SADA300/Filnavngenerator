@@ -1092,10 +1092,10 @@ button.action.active {
 <label for="download-mode">Lagring av filer</label>
 <select id="download-mode">
 <option value="fast">Lagre automatisk i standard mappe</option>
-<option value="choose">Velg lagringssted for hver fil</option>
+<option value="folder">Velg mappe én gang for alle filer</option>
 </select>
 <small class="field-help">
-                Velg automatisk lagring for rask nedlasting. Velg alternativet under hvis du vil bestemme lagringssted per fil.
+                Velg automatisk lagring for rask nedlasting, eller velg én mappe én gang for alle filene.
             </small>
 </div>
 <div class="form-group full-width">
@@ -1607,6 +1607,7 @@ function initializeMultiModeHelp() {
     }
 
     let currentSelectedFileCount = 0;
+    let selectedDirectoryHandle = null;
 
     function updateDropZoneInfo(fileCount = currentSelectedFileCount) {
         const mode = document.getElementById('download-mode')?.value || 'fast';
@@ -1614,8 +1615,9 @@ function initializeMultiModeHelp() {
 
         const subtitle = document.getElementById('drop-subtitle');
         const meta = document.getElementById('drop-meta');
+        const state = document.getElementById('download-state');
 
-        const modeText = mode === 'fast' ? 'Standard mappe' : 'Velg per fil';
+        const modeText = mode === 'fast' ? 'Standard mappe' : 'Valgt mappe én gang';
 
         const multiText = {
             number: 'Løpenummer',
@@ -1627,11 +1629,17 @@ function initializeMultiModeHelp() {
         if (subtitle) {
             subtitle.textContent = mode === 'fast'
                 ? 'Filene lagres automatisk i standard mappe.'
-                : 'Du velger lagringssted for hver fil ved nedlasting.';
+                : 'Du velger én mappe én gang, og alle filene lagres der.';
         }
 
         if (meta) {
             meta.textContent = `Navngivning: ${multiText[multi] || 'Løpenummer'} · Lagring: ${modeText} · Filer valgt: ${fileCount}`;
+        }
+
+        if (state) {
+            state.innerHTML = mode === 'fast'
+                ? '<strong>Status:</strong> Automatisk lagring til standard mappe er aktiv.'
+                : '<strong>Status:</strong> Programmet vil be deg velge én mappe før lagring starter.';
         }
     }
 
@@ -1742,22 +1750,27 @@ function buildFinalName(file, index, totalFiles, generatedName) {
         setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
 
-    async function saveWithPicker(file, finalName) {
-        if (!window.showSaveFilePicker) {
-            triggerFastDownload(file, finalName);
-            return;
+    async function pickTargetDirectory() {
+        if (!window.showDirectoryPicker) {
+            alert('Denne nettleseren støtter ikke valg av mappe. Bruk automatisk lagring i standard mappe.');
+            return null;
         }
 
-        const fileExtension = finalName.includes('.') ? finalName.split('.').pop() : '';
-        const handle = await window.showSaveFilePicker({
-            suggestedName: finalName,
-            types: fileExtension ? [{
-                description: `${fileExtension.toUpperCase()} file`,
-                accept: { 'application/octet-stream': [`.${fileExtension}`] }
-            }] : undefined
-        });
+        try {
+            selectedDirectoryHandle = await window.showDirectoryPicker();
+            return selectedDirectoryHandle;
+        } catch (error) {
+            if (error?.name !== 'AbortError') {
+                console.error(error);
+                alert('Kunne ikke velge mappe.');
+            }
+            return null;
+        }
+    }
 
-        const writable = await handle.createWritable();
+    async function saveToDirectory(file, finalName, directoryHandle) {
+        const fileHandle = await directoryHandle.getFileHandle(finalName, { create: true });
+        const writable = await fileHandle.createWritable();
         await writable.write(file);
         await writable.close();
     }
@@ -1774,23 +1787,33 @@ function buildFinalName(file, index, totalFiles, generatedName) {
 
         const downloadMode = document.getElementById('download-mode')?.value || 'fast';
 
+        let directoryHandle = null;
+
+        if (downloadMode === 'folder') {
+            directoryHandle = await pickTargetDirectory();
+            if (!directoryHandle) {
+                return;
+            }
+        }
+
         for (let index = 0; index < files.length; index++) {
             const file = files[index];
             const finalName = buildFinalName(file, index, files.length, generatedName);
             addHistoryRow(file.name, finalName);
 
             try {
-                if (downloadMode === 'choose') {
-                    await saveWithPicker(file, finalName);
+                if (downloadMode === 'folder') {
+                    await saveToDirectory(file, finalName, directoryHandle);
                 } else {
                     triggerFastDownload(file, finalName);
                 }
             } catch (error) {
-                if (error && error.name === 'AbortError') {
+                if (error?.name === 'AbortError') {
                     break;
                 }
+
                 console.error(error);
-                triggerFastDownload(file, finalName);
+                alert(`Kunne ikke lagre filen: ${finalName}`);
             }
         }
 
