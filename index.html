@@ -1095,7 +1095,7 @@ button.action.active {
 <option value="folder">Velg mappe én gang for alle filer</option>
 </select>
 <small class="field-help">
-                Velg automatisk lagring for rask nedlasting, eller velg én mappe én gang for alle filene.
+                Velg automatisk lagring for rask nedlasting, eller velg én mappe én gang for alle filene når lagringen starter.
             </small>
 </div>
 <div class="form-group full-width">
@@ -1111,7 +1111,7 @@ button.action.active {
             </small>
 </div>
 <div class="download-state" id="download-state">
-<strong>Status:</strong> Angi lagringsvalg før du laster opp eller drar inn filer.
+<strong>Status:</strong> Velg lagringsmåte og dra inn filer når du er klar.
         </div>
 </div>
 </div>
@@ -1143,13 +1143,13 @@ button.action.active {
 <li>Fyll inn feltene og trykk <b>Generer filnavn</b>.</li>
 <li>Bruk <b>Kopier navn</b> hvis du vil lime inn navnet manuelt.</li>
 <li>Bruk <b>Neste løpenummer</b> når du lager flere filer i samme serie.</li>
-<li>Åpne <b>Lagringsinnstillinger</b> før du drar inn filer hvis du vil velge lagring eller navngivning.</li>
+<li>Åpne <b>Lagringsinnstillinger</b> hvis du vil velge lagringsmåte eller justere navngivning.</li>
 </ul>
 <div class="veiledning-tip">
 <b>Tips:</b><br/>
         Trykk Generer filnavn før du laster opp filer.<br/>
         Velg løpenummer når flere filer skal nummereres automatisk.<br/>
-        Velg automatisk lagring for rask nedlasting.
+        Velg automatisk lagring for rask nedlasting, eller velg én mappe én gang for alle filene.
     </div>
 </div>
 
@@ -1581,7 +1581,7 @@ button.action.active {
         if (state) {
             state.innerHTML = isOpen
                 ? '<strong>Status:</strong> Lagringsinnstillinger er skjult.'
-                : '<strong>Status:</strong> Angi lagringsvalg før du laster opp eller drar inn filer.';
+                : '<strong>Status:</strong> Velg lagringsmåte og dra inn filer når du er klar.';
         }
     }
 
@@ -1609,6 +1609,10 @@ function initializeMultiModeHelp() {
     let currentSelectedFileCount = 0;
     let selectedDirectoryHandle = null;
 
+    function resetSelectedDirectory() {
+        selectedDirectoryHandle = null;
+    }
+
     function updateDropZoneInfo(fileCount = currentSelectedFileCount) {
         const mode = document.getElementById('download-mode')?.value || 'fast';
         const multi = document.getElementById('multi-mode')?.value || 'number';
@@ -1617,7 +1621,7 @@ function initializeMultiModeHelp() {
         const meta = document.getElementById('drop-meta');
         const state = document.getElementById('download-state');
 
-        const modeText = mode === 'fast' ? 'Standard mappe' : 'Valgt mappe én gang';
+        const modeText = mode === 'folder' ? 'Velg mappe én gang' : 'Standard mappe';
 
         const multiText = {
             number: 'Løpenummer',
@@ -1627,9 +1631,9 @@ function initializeMultiModeHelp() {
         };
 
         if (subtitle) {
-            subtitle.textContent = mode === 'fast'
-                ? 'Filene lagres automatisk i standard mappe.'
-                : 'Du velger én mappe én gang, og alle filene lagres der.';
+            subtitle.textContent = mode === 'folder'
+                ? 'Dra inn eller velg filer først. Deretter velger du én mappe, og alle filene lagres der.'
+                : 'Filene lagres automatisk i standard mappe.';
         }
 
         if (meta) {
@@ -1637,9 +1641,9 @@ function initializeMultiModeHelp() {
         }
 
         if (state) {
-            state.innerHTML = mode === 'fast'
-                ? '<strong>Status:</strong> Automatisk lagring til standard mappe er aktiv.'
-                : '<strong>Status:</strong> Programmet vil be deg velge én mappe før lagring starter.';
+            state.innerHTML = mode === 'folder'
+                ? '<strong>Status:</strong> Når du starter lagring, velger du én mappe for hele denne runden.'
+                : '<strong>Status:</strong> Filene lastes ned direkte til standard mappe.';
         }
     }
 
@@ -1657,7 +1661,6 @@ function initializeMultiModeHelp() {
         const btn = document.querySelector('.btn-next');
         if (btn) {
             btn.classList.add('active');
-            setTimeout(() => btn.classList.add('active'), 50);
         }
         generate();
     }
@@ -1751,19 +1754,18 @@ function buildFinalName(file, index, totalFiles, generatedName) {
     }
 
     async function pickTargetDirectory() {
-        if (!window.showDirectoryPicker) {
-            alert('Denne nettleseren støtter ikke valg av mappe. Bruk automatisk lagring i standard mappe.');
+        if (!window.showDirectoryPicker || !window.isSecureContext) {
             return null;
         }
 
         try {
-            selectedDirectoryHandle = await window.showDirectoryPicker();
-            return selectedDirectoryHandle;
+            return await window.showDirectoryPicker({ mode: 'readwrite' });
         } catch (error) {
-            if (error?.name !== 'AbortError') {
-                console.error(error);
-                alert('Kunne ikke velge mappe.');
+            if (error?.name === 'AbortError') {
+                return null;
             }
+
+            console.error(error);
             return null;
         }
     }
@@ -1786,14 +1788,26 @@ function buildFinalName(file, index, totalFiles, generatedName) {
         updateDropZoneInfo();
 
         const downloadMode = document.getElementById('download-mode')?.value || 'fast';
-
         let directoryHandle = null;
 
         if (downloadMode === 'folder') {
             directoryHandle = await pickTargetDirectory();
+
             if (!directoryHandle) {
+                for (let index = 0; index < files.length; index++) {
+                    const file = files[index];
+                    const finalName = buildFinalName(file, index, files.length, generatedName);
+                    addHistoryRow(file.name, finalName);
+                    triggerFastDownload(file, finalName);
+                }
+
+                resetSelectedDirectory();
+                updateDropZoneInfo();
                 return;
             }
+
+            selectedDirectoryHandle = directoryHandle;
+            updateDropZoneInfo();
         }
 
         for (let index = 0; index < files.length; index++) {
@@ -1802,7 +1816,7 @@ function buildFinalName(file, index, totalFiles, generatedName) {
             addHistoryRow(file.name, finalName);
 
             try {
-                if (downloadMode === 'folder') {
+                if (downloadMode === 'folder' && directoryHandle) {
                     await saveToDirectory(file, finalName, directoryHandle);
                 } else {
                     triggerFastDownload(file, finalName);
@@ -1813,10 +1827,12 @@ function buildFinalName(file, index, totalFiles, generatedName) {
                 }
 
                 console.error(error);
-                alert(`Kunne ikke lagre filen: ${finalName}`);
+                triggerFastDownload(file, finalName);
             }
         }
 
+        resetSelectedDirectory();
+        updateDropZoneInfo();
     }
 
 
@@ -1838,7 +1854,7 @@ function buildFinalName(file, index, totalFiles, generatedName) {
             }, false);
         });
 
-        myDropZone.addEventListener('click', () => {
+        myDropZone.addEventListener('click', async () => {
             if (myFileInput) myFileInput.click();
         });
 
@@ -1880,7 +1896,10 @@ function buildFinalName(file, index, totalFiles, generatedName) {
         const multiMode = document.getElementById('multi-mode');
 
         if (downloadMode) {
-            downloadMode.addEventListener('change', () => updateDropZoneInfo(0));
+            downloadMode.addEventListener('change', () => {
+                resetSelectedDirectory();
+                updateDropZoneInfo(0);
+            });
         }
 
         if (multiMode) {
