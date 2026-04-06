@@ -387,6 +387,24 @@ button.action.active {
     font-size: 13px;
     color: #334155;
 }
+
+
+.btn-pick-folder {
+    background: #ef6c00 !important;
+    color: white !important;
+    border: 1px solid #d45d00 !important;
+    animation: pulse 1.2s ease 2;
+}
+
+.btn-pick-folder:hover {
+    background: #d45d00 !important;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(239,108,0,0.4); }
+    70% { box-shadow: 0 0 0 12px rgba(239,108,0,0); }
+    100% { box-shadow: 0 0 0 0 rgba(239,108,0,0); }
+}
 </style>
 </head>
 <body>
@@ -556,11 +574,11 @@ button.action.active {
 <option value="291">Hull og tettinger</option>
 <option value="300">Generelt vedr. VVS- installasjoner</option>
 <option value="310">Sanitæranlegg</option>
-<option value="311">Bunnledninger for sanitærinstallasjoner</option> 
+<option value="311">Bunnledninger for sanitærinstallasjoner</option>
 <option value="320">Varmeanlegg</option>
 <option value="331">Installasjon for manuell brannslokking med vann</option>
 <option value="332">Installasjon for brannslokking med sprinkler</option>
-<option value="333"> Installasjon for brannslokking med vanntåke</option> 
+<option value="333"> Installasjon for brannslokking med vanntåke</option>
 <option value="334">Installasjon for brannslokking med pulver</option>
 <option value="335">Installasjon for brannslokking med gass</option>
 <option value="336">Installasjon for brannslokking med skum</option>
@@ -569,7 +587,7 @@ button.action.active {
 <option value="341">Installasjon for gass til bygningsdrift</option>
 <option value="342">Installasjon for gass til virksomhet</option>
 <option value="343">Installasjon for medisinske gasser</option>
-<option value="345"> Installasjon for trykkluft til virksomhet</option> 
+<option value="345"> Installasjon for trykkluft til virksomhet</option>
 <option value="346">Installasjon for medisinsk trykkluft</option>
 <option value="347">Installasjon for vakuumanlegg</option>
 <option value="348">Spesialavtrekk for gasser</option>
@@ -600,15 +618,13 @@ button.action.active {
 <option value="431">Installasjoner for elkraftinntak</option>
 <option value="432">Installasjoner for hovedfordeling</option>
 <option value="433">Basisinstallasjoner for elkraft</option>
-<option value="434">Elkraftfordeling til driftstekniske installasjoner</option> 
-
+<option value="434">Elkraftfordeling til driftstekniske installasjoner</option>
 <option value="435"> Elkraftfordeling til virksomhet</option>
 <option value="436"> Elkraftfordeling til lading</option>
 <option value="439">Andre deler for lavspent forsyning</option>
 <option value="442">Belysning</option>
 <option value="443">Nødlys</option>
 <option value="449">Andre deler for installasjoner til lys </option>
-
 <option value="450">Elvarme</option>
 <option value="461">Elkraftaggregater</option>
 <option value="462">Avbruddsfri kraftforsyning</option>
@@ -618,7 +634,7 @@ button.action.active {
 <option value="472"> Vindmøller</option>
 <option value="479">Andre deler for lokal elkraftproduksjon</option>
 <option value="481"> Elektrisk korrosjonsbeskytelse</option>
-<option value="482">Elektrisk sikkerhet for forebygging mot uønskede hendelser</option> 
+<option value="482">Elektrisk sikkerhet for forebygging mot uønskede hendelser</option>
 <option value="489"> Andre deler for installasjon for elektrisk beskyttelse</option>
 <option value="490">Andre elkraftinstallasjoner</option>
 <option value="500">Ekom og automatisering, generelt</option>
@@ -634,8 +650,8 @@ button.action.active {
 <option value="543">Adgangskontroll og innbruddsalarm</option>
 <option value="544">Pasientsignal</option>
 <option value="545">Uranlegg og tidsregistrering</option>
-<option value="546">Alarm knyttet til bygning eller installasjon</option> 
-<option value="549">Andre deler for alarm og signal</option> 
+<option value="546">Alarm knyttet til bygning eller installasjon</option>
+<option value="549">Andre deler for alarm og signal</option>
 <option value="552">Fellesantenne</option>
 <option value="553">Internfjernsyn</option>
 <option value="554">Lyddistribusjonsanlegg</option>
@@ -673,7 +689,7 @@ button.action.active {
 <option value="651"> Utstyr for oppsamling og behandling av avfall</option>
 <option value="652"> Sentralstøvsuger</option>
 <option value="653"> Pneumatisk søppeltransport</option>
-<option value="659"> Andre installasjoner for avfall og støvsugning</option> 
+<option value="659"> Andre installasjoner for avfall og støvsugning</option>
 <option value="660"> Utstyr for fastmontert spesialutrustning for virksomhet</option>
 <option value="670"> Utstyr for løs spesialutrustning for virksomhet</option>
 <option value="680"> Deler til inventar</option>
@@ -687,12 +703,12 @@ button.action.active {
 <option value="719">Annen terrengbearbeiding</option>
 <option value="721">Utendørs støttemurer og andre murer</option>
 <option value="722">Utendørs trapper, ramper, terrasser, platting i terreng</option>
-<option value="723">Utendørs skjermtak, leskur m.m.som henger sammen med bygning</option> 
-<option value="724">Utendørs svømmebassenger m.m.</option> 
-<option value="725">Utendørs gjerder, porter og bommer</option> 
-<option value="726">Utendørs kanaler og kulverter for tekniske installasjoner</option> 
-<option value="727">Utendørs kummer og tanker for tekniske installasjoner</option> 
-<option value="729">Andre utendørs konstruksjoner</option> 
+<option value="723">Utendørs skjermtak, leskur m.m.som henger sammen med bygning</option>
+<option value="724">Utendørs svømmebassenger m.m.</option>
+<option value="725">Utendørs gjerder, porter og bommer</option>
+<option value="726">Utendørs kanaler og kulverter for tekniske installasjoner</option>
+<option value="727">Utendørs kummer og tanker for tekniske installasjoner</option>
+<option value="729">Andre utendørs konstruksjoner</option>
 <option value="731">Utendørs VA</option>
 <option value="732">Utendørs varme</option>
 <option value="733">Utendørs brannslokking</option>
@@ -713,17 +729,17 @@ button.action.active {
 <option value="754">Utendørs alarm og signal</option>
 <option value="755">Utendørs lyd og bilde</option>
 <option value="756">Utendørs automatisering</option>
-<option value="759">Andre installasjoner for  utendørs ekom og automatisering</option> 
+<option value="759">Andre installasjoner for  utendørs ekom og automatisering</option>
 <option value="761">Veier</option>
 <option value="762">Plasser</option>
 <option value="763">Utendørs skilter</option>
-<option value="764">Utendørs sikkerhetsrekkverk,avvisere, guard-rail m.m.</option> 
-<option value="769">Andre deler for veier og plasser</option> 
-<option value="771">Utendørs gressarealer</option> 
-<option value="772">Utendørs gressarealer</option> 
-<option value="773">Utendørs utstyr</option> 
-<option value="774">Utendørs plasser for idrett og kultur</option> 
-<option value="775">Utendørs tribuner og amfier</option> 
+<option value="764">Utendørs sikkerhetsrekkverk,avvisere, guard-rail m.m.</option>
+<option value="769">Andre deler for veier og plasser</option>
+<option value="771">Utendørs gressarealer</option>
+<option value="772">Utendørs gressarealer</option>
+<option value="773">Utendørs utstyr</option>
+<option value="774">Utendørs plasser for idrett og kultur</option>
+<option value="775">Utendørs tribuner og amfier</option>
 <option value="779">Andre deler for park og grøntanlegg</option>
 <option value="783">Utendørs tilknytning til eksterne nett for vannforsyning, avløp og fjernvarme</option>
 <option value="784">Utendørs tilknytning til eksternt elkraftnet</option>
@@ -1213,6 +1229,12 @@ button.action.active {
             </small>
 </div>
 <div class="form-group full-width">
+<button class="action btn-copy btn-pick-folder" id="pick-folder-btn" onclick="chooseFolderManually()" style="width:100%;" type="button">Velg lagringsmappe </button>
+<small class="field-help" id="pick-folder-help">
+                Bruk denne knappen først når du vil lagre i en bestemt mappe. Dette er nødvendig fordi nettleseren krever et direkte klikk fra deg.
+            </small>
+</div>
+<div class="form-group full-width">
 <label for="multi-mode">Navngivning av flere filer</label>
 <select id="multi-mode">
 <option value="number">Legg til løpenummer (001, 002, 003)</option>
@@ -1249,7 +1271,6 @@ button.action.active {
 </tbody>
 </table>
 </div>
-
 <div class="veiledning">
 <h3>Slik bruker du verktøyet</h3>
 <ul>
@@ -1266,7 +1287,6 @@ button.action.active {
         Velg automatisk lagring for rask nedlasting, eller velg én mappe én gang for alle filene.
     </div>
 </div>
-
 </div>
 <script>
     let activeTab = 'std';
@@ -1315,6 +1335,7 @@ button.action.active {
     "Skall-, brann- og terrorsikring der dette er en integrert funksjon",
     "Sprenging, graving, fylling, grøfter for bunnledning, bærelag og avrettet underlag på grunn",
     "System- og funksjonsbeskrivelse",
+    "Risiko- og miljøvurdering pga.arbeidsmedium", 
     "Testprosedyre"
 ],
      
@@ -1458,6 +1479,7 @@ button.action.active {
     "Trykkprøving",
     "Utførelse og tetteliste",
     "Verifikasjonsrapport",
+    
     "Vibrasjonsmåling"
 ],
          
@@ -1727,15 +1749,17 @@ function initializeMultiModeHelp() {
         selectedDirectoryHandle = null;
     }
 
-    function updateDropZoneInfo(fileCount = currentSelectedFileCount) {
+    function updateDropZoneInfo(fileCount = currentSelectedFileCount, preserveStatus = false) {
         const mode = document.getElementById('download-mode')?.value || 'fast';
         const multi = document.getElementById('multi-mode')?.value || 'number';
 
         const subtitle = document.getElementById('drop-subtitle');
         const meta = document.getElementById('drop-meta');
         const state = document.getElementById('download-state');
+        const pickBtn = document.getElementById('pick-folder-btn');
+        const pickHelp = document.getElementById('pick-folder-help');
 
-        const modeText = mode === 'folder' ? 'Velg mappe én gang' : 'Standard mappe';
+        const modeText = mode === 'folder' ? 'Valgt mappe' : 'Standard mappe';
 
         const multiText = {
             number: 'Løpenummer',
@@ -1746,18 +1770,34 @@ function initializeMultiModeHelp() {
 
         if (subtitle) {
             subtitle.textContent = mode === 'folder'
-                ? 'Dra inn eller velg filer først. Deretter velger du én mappe, og alle filene lagres der.'
+                ? 'Velg mappe med knappen under først. Deretter velger eller drar du inn filer.'
                 : 'Filene lagres automatisk i standard mappe.';
         }
 
         if (meta) {
-            meta.textContent = `Navngivning: ${multiText[multi] || 'Løpenummer'} · Lagring: ${modeText} · Filer valgt: ${fileCount}`;
+            const folderState = mode === 'folder'
+                ? (selectedDirectoryHandle ? 'mappe valgt' : 'ingen mappe valgt')
+                : 'standard mappe';
+            meta.textContent = `Navngivning: ${multiText[multi] || 'Løpenummer'} · Lagring: ${folderState} · Filer valgt: ${fileCount}`;
         }
 
-        if (state) {
-            state.innerHTML = mode === 'folder'
-                ? '<strong>Status:</strong> Når du starter lagring, velger du én mappe for hele denne runden.'
-                : '<strong>Status:</strong> Filene lastes ned direkte til standard mappe.';
+        if (pickBtn) {
+            pickBtn.style.display = mode === 'folder' ? 'block' : 'none';
+            pickBtn.disabled = !isFolderModeSupported();
+        }
+
+        if (pickHelp) {
+            pickHelp.style.display = mode === 'folder' ? 'block' : 'none';
+        }
+
+        if (state && !preserveStatus) {
+            if (mode === 'folder') {
+                state.innerHTML = selectedDirectoryHandle
+                    ? '<strong>Status:</strong> Mappe er valgt. Nå kan du velge filer eller dra dem inn.'
+                    : '<strong>Status:</strong> Trykk først på «Velg lagringsmappe nå», og velg deretter filene.';
+            } else {
+                state.innerHTML = '<strong>Status:</strong> Filene lastes ned direkte til standard mappe.';
+            }
         }
     }
 
@@ -1793,7 +1833,6 @@ function initializeMultiModeHelp() {
     function getGeneratedName() {
         const generatedName = document.getElementById('result-text').innerText.trim();
         if (!generatedName || generatedName === 'Klar til å generere...' || generatedName.includes('---')) {
-            alert("Vennligst fyll ut feltene og generer et navn først!");
             return null;
         }
         return generatedName;
@@ -1833,11 +1872,22 @@ function getSingleExtension(filename) {
     return match ? '.' + match[1] : '';
 }
 
+function getBaseNameOnly(filename) {
+    return splitNameAndExtension(filename).base;
+}
+
+function normalizeFileNamePart(value) {
+    return String(value || '')
+        .replace(/[\/:*?"<>|]+/g, '-')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
 function buildFinalName(file, index, totalFiles, generatedName) {
     const multiMode = document.getElementById('multi-mode')?.value || 'number';
 
-    const cleanGeneratedBase = stripAllExtensions(generatedName);
-    const originalBase = stripAllExtensions(file.name);
+    const cleanGeneratedBase = normalizeFileNamePart(stripAllExtensions(generatedName));
+    const originalBase = normalizeFileNamePart(getBaseNameOnly(file.name));
     const originalExt = getSingleExtension(file.name);
 
     if (multiMode === 'prepend') {
@@ -1846,6 +1896,10 @@ function buildFinalName(file, index, totalFiles, generatedName) {
 
     if (multiMode === 'append') {
         return `${originalBase}-${cleanGeneratedBase}${originalExt}`;
+    }
+
+    if (multiMode === 'same') {
+        return `${cleanGeneratedBase}${originalExt}`;
     }
 
     if (totalFiles > 1 && multiMode === 'number') {
@@ -1861,10 +1915,13 @@ function buildFinalName(file, index, totalFiles, generatedName) {
         const a = document.createElement('a');
         a.href = url;
         a.download = finalName;
+        a.style.display = 'none';
         document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        a.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        setTimeout(() => {
+            a.remove();
+            URL.revokeObjectURL(url);
+        }, 1000);
     }
 
     async function pickTargetDirectory() {
@@ -1872,15 +1929,45 @@ function buildFinalName(file, index, totalFiles, generatedName) {
             return null;
         }
 
+        return await window.showDirectoryPicker({ mode: 'readwrite' });
+    }
+
+    async function chooseFolderManually() {
+        const state = document.getElementById('download-state');
+
+        if (!isFolderModeSupported()) {
+            if (state) {
+                state.innerHTML = '<strong>Status:</strong> Mappevalg støttes ikke i denne åpningen. Bruk vanlig nedlasting eller åpne siden via https eller localhost i Chrome eller Edge.';
+            }
+            return;
+        }
+
         try {
-            return await window.showDirectoryPicker({ mode: 'readwrite' });
+            const handle = await pickTargetDirectory();
+            if (!handle) {
+                if (state) {
+                    state.innerHTML = '<strong>Status:</strong> Ingen mappe ble valgt.';
+                }
+                return;
+            }
+
+            selectedDirectoryHandle = handle;
+            if (state) {
+                state.innerHTML = '<strong>Status:</strong> Mappe er valgt. Nå kan du velge eller dra inn filer.';
+            }
+            updateDropZoneInfo(currentSelectedFileCount, true);
         } catch (error) {
             if (error?.name === 'AbortError') {
-                return null;
+                if (state) {
+                    state.innerHTML = '<strong>Status:</strong> Mappevalg ble avbrutt.';
+                }
+                return;
             }
 
             console.error(error);
-            return null;
+            if (state) {
+                state.innerHTML = '<strong>Status:</strong> Nettleseren blokkerte mappevalg. Trykk på knappen «Velg lagringsmappe nå» direkte før du velger filer.';
+            }
         }
     }
 
@@ -1891,43 +1978,89 @@ function buildFinalName(file, index, totalFiles, generatedName) {
         await writable.close();
     }
 
+    function isFolderModeSupported() {
+        return !!(window.showDirectoryPicker && window.isSecureContext);
+    }
+
+    function syncDownloadModeAvailability() {
+        const downloadMode = document.getElementById('download-mode');
+        const state = document.getElementById('download-state');
+        if (!downloadMode) return;
+
+        const folderOption = Array.from(downloadMode.options || []).find(option => option.value === 'folder');
+        const supported = isFolderModeSupported();
+
+        if (folderOption) {
+            folderOption.disabled = !supported;
+            folderOption.textContent = supported
+                ? 'Velg mappe én gang for alle filer'
+                : 'Velg mappe én gang for alle filer (ikke støttet her)';
+        }
+
+        if (!supported && downloadMode.value === 'folder') {
+            downloadMode.value = 'fast';
+        }
+
+        const pickBtn = document.getElementById('pick-folder-btn');
+        const pickHelp = document.getElementById('pick-folder-help');
+
+        if (pickBtn) {
+            pickBtn.disabled = !supported;
+            pickBtn.style.display = downloadMode.value === 'folder' ? 'block' : 'none';
+        }
+
+        if (pickHelp) {
+            pickHelp.style.display = downloadMode.value === 'folder' ? 'block' : 'none';
+        }
+
+        if (state && !supported) {
+            state.innerHTML = '<strong>Status:</strong> Mappevalg er ikke tilgjengelig i denne åpningen. Vanlig nedlasting virker fortsatt.';
+        }
+    }
+
     async function processSelectedFiles(fileList) {
-        const generatedName = getGeneratedName();
-        if (!generatedName) return;
+        const generatedName = generate() || getGeneratedName();
+        if (!generatedName) {
+            const state = document.getElementById('download-state');
+            if (state) {
+                state.innerHTML = '<strong>Status:</strong> Kunne ikke lage filnavn. Kontroller feltene og prøv igjen.';
+            }
+            return;
+        }
 
         const files = Array.from(fileList || []);
         if (!files.length) return;
 
         currentSelectedFileCount = files.length;
-        updateDropZoneInfo();
+        updateDropZoneInfo(currentSelectedFileCount, true);
 
         const downloadMode = document.getElementById('download-mode')?.value || 'fast';
+        const state = document.getElementById('download-state');
         let directoryHandle = null;
 
         if (downloadMode === 'folder') {
-            directoryHandle = await pickTargetDirectory();
-
-            if (!directoryHandle) {
-                for (let index = 0; index < files.length; index++) {
-                    const file = files[index];
-                    const finalName = buildFinalName(file, index, files.length, generatedName);
-                    addHistoryRow(file.name, finalName);
-                    triggerFastDownload(file, finalName);
+            if (!isFolderModeSupported()) {
+                if (state) {
+                    state.innerHTML = '<strong>Status:</strong> Mappevalg er ikke tilgjengelig her. Endre til vanlig nedlasting og prøv igjen.';
                 }
-
-                resetSelectedDirectory();
-                updateDropZoneInfo();
                 return;
             }
 
-            selectedDirectoryHandle = directoryHandle;
-            updateDropZoneInfo();
+            if (!selectedDirectoryHandle) {
+                if (state) {
+                    state.innerHTML = '<strong>Status:</strong> Ingen mappe er valgt ennå. Trykk først på «Velg lagringsmappe nå».';
+                }
+                return;
+            }
+
+            directoryHandle = selectedDirectoryHandle;
         }
+
+        let savedCount = 0;
 
         for (let index = 0; index < files.length; index++) {
             const file = files[index];
             const finalName = buildFinalName(file, index, files.length, generatedName);
-            addHistoryRow(file.name, finalName);
 
             try {
                 if (downloadMode === 'folder' && directoryHandle) {
@@ -1935,18 +2068,30 @@ function buildFinalName(file, index, totalFiles, generatedName) {
                 } else {
                     triggerFastDownload(file, finalName);
                 }
-            } catch (error) {
-                if (error?.name === 'AbortError') {
-                    break;
-                }
 
+                addHistoryRow(file.name, finalName);
+                savedCount += 1;
+            } catch (error) {
                 console.error(error);
-                triggerFastDownload(file, finalName);
+
+                if (state) {
+                    state.innerHTML = `<strong>Status:</strong> Stoppet ved fil ${index + 1} av ${files.length}. Ingen automatisk fallback til standard mappe ble brukt.`;
+                }
+                break;
             }
         }
 
-        resetSelectedDirectory();
-        updateDropZoneInfo();
+        if (state) {
+            const destinationText = downloadMode === 'folder'
+                ? 'valgt mappe'
+                : 'standard mappe';
+            state.innerHTML = `<strong>Status:</strong> ${savedCount} av ${files.length} filer ble lagret til ${destinationText}.`;
+        }
+
+        if (downloadMode !== 'folder') {
+            resetSelectedDirectory();
+        }
+        updateDropZoneInfo(currentSelectedFileCount, true);
     }
 
 
@@ -2009,10 +2154,15 @@ function buildFinalName(file, index, totalFiles, generatedName) {
         const downloadMode = document.getElementById('download-mode');
         const multiMode = document.getElementById('multi-mode');
 
+        syncDownloadModeAvailability();
+
         if (downloadMode) {
             downloadMode.addEventListener('change', () => {
-                resetSelectedDirectory();
-                updateDropZoneInfo(0);
+                if (downloadMode.value !== 'folder') {
+                    resetSelectedDirectory();
+                }
+                syncDownloadModeAvailability();
+                updateDropZoneInfo(currentSelectedFileCount || 0);
             });
         }
 
